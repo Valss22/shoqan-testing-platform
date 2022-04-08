@@ -9,6 +9,6 @@ class User(models.Model):
     email = fields.CharField(max_length=128, unique=True)
     password_hash = fields.CharField(max_length=128)
 
-    # async def save(self, *args, **kwargs):
-    #     self.password_hash = bcrypt.hashpw(self.password_hash, SALT)
-    #     await super().save(*args, **kwargs)
+    async def save(self, *args, **kwargs):
+        self.password_hash = bcrypt.hashpw(self.password_hash.encode(), SALT)
+        await super().save(*args, **kwargs)
