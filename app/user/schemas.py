@@ -1,9 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class UserIn(BaseModel):
-    email: str
+    email: EmailStr
 
-
-class UserOut(BaseModel):
-    email: str
