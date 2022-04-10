@@ -30,7 +30,7 @@ class UserService:
         smtp.sendmail('ShoqanPlatform@gmail.com', [email], password)
         smtp.quit()
 
-    async def auth_user(self, user: UserIn) -> Union[None, dict, JSONResponse]:
+    async def auth_user(self, user: UserIn, is_admin: bool) -> Union[None, dict, JSONResponse]:
         email: EmailStr = user.dict()['email']
         password: bytes = user.dict()['password'].encode()
         user_obj = await User.get(email=email)
@@ -43,9 +43,12 @@ class UserService:
             }
             return {
                 **user_obj.__dict__,
-                'token': jwt.encode(payload, TOKEN_KEY)
+                'token': jwt.encode(payload, TOKEN_KEY),
+                'isAdmin': is_admin
             }
         return JSONResponse(
             {'msg': 'wrong password'},
             status.HTTP_400_BAD_REQUEST
         )
+
+

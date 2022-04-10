@@ -1,6 +1,6 @@
 from typing import Optional
 from uuid import UUID
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class UserIn(BaseModel):
@@ -12,3 +12,4 @@ class UserOut(BaseModel):
     id: UUID
     email: EmailStr
     token: str
+    is_admin: bool = Field(alias='isAdmin')

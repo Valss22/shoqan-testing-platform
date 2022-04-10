@@ -6,7 +6,6 @@ import os
 from dotenv import load_dotenv
 from app.routers import api_router
 
-
 load_dotenv()
 app = FastAPI()
 
@@ -34,4 +33,3 @@ register_tortoise(
 )
 
 app.include_router(api_router)
-
