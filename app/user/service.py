@@ -39,6 +39,7 @@ class UserService:
             payload: dict = {
                 'id': str(user_obj.id),
                 'email': user_obj.email,
+                'isAdmin': is_admin,
                 'exp': time() + TOKEN_TIME
             }
             return {
