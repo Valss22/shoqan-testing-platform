@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 from app.routers import api_router
 
+
 load_dotenv()
 app = FastAPI()
 
