@@ -29,7 +29,7 @@ class UserService:
         smtp.sendmail('ShoqanPlatform@gmail.com', [email], password)
         smtp.quit()
 
-    async def auth_user(self, user: UserIn, is_admin: bool) -> Optional[dict, JSONResponse]:
+    async def auth_user(self, user: UserIn, is_admin: bool) -> Union[None, dict, JSONResponse]:
         email: EmailStr = user.dict()['email']
         password: bytes = user.dict()['password'].encode()
         user_obj = await User.get(email=email)
