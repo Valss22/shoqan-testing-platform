@@ -1,6 +1,5 @@
 from time import time
-from typing import Optional, Union
-from uuid import UUID
+from typing import Union, Optional
 
 import bcrypt
 import jwt
@@ -17,7 +16,7 @@ import secrets
 
 class UserService:
     async def create_user(self, user: UserIn) -> None:
-        password: Optional[str, bytes] = secrets.token_urlsafe(4)
+        password: Union[str, bytes] = secrets.token_urlsafe(4)
         email: EmailStr = user.dict()['email']
         self.send_password_to_email(password, email)
         password = password.encode()
@@ -30,7 +29,7 @@ class UserService:
         smtp.sendmail('ShoqanPlatform@gmail.com', [email], password)
         smtp.quit()
 
-    async def auth_user(self, user: UserIn, is_admin: bool) -> Union[None, dict, JSONResponse]:
+    async def auth_user(self, user: UserIn, is_admin: bool) -> Optional[dict, JSONResponse]:
         email: EmailStr = user.dict()['email']
         password: bytes = user.dict()['password'].encode()
         user_obj = await User.get(email=email)
@@ -51,5 +50,3 @@ class UserService:
             {'msg': 'wrong password'},
             status.HTTP_400_BAD_REQUEST
         )
-
-
