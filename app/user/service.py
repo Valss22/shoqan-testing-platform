@@ -17,7 +17,7 @@ import secrets
 
 class UserService:
     async def create_user(self, user: UserIn) -> None:
-        password: Optional[str, bytes] = secrets.token_urlsafe(32)
+        password: Optional[str, bytes] = secrets.token_urlsafe(4)
         email: EmailStr = user.dict()['email']
         self.send_password_to_email(password, email)
         password = password.encode()
