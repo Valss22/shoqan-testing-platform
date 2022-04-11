@@ -29,9 +29,7 @@ register_tortoise(
     db_url=os.getenv("DATABASE_URL"),
 
     modules={"models": [
-        "app.user.model",
-        "app.user_profile.model",
-
+        "app.user.model"
     ]},
     generate_schemas=True,
     add_exception_handlers=True,

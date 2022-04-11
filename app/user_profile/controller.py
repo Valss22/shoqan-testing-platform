@@ -8,6 +8,6 @@ user_profile_router = APIRouter(
 )
 
 
-@user_profile_router.post('/')
-async def write_to_user_profile(user_profile: UserProfileIn):
-    return await UserProfile.create(**user_profile.dict())
+# @user_profile_router.post('/')
+# async def write_to_user_profile(user_profile: UserProfileIn):
+#     return await UserProfile.create(**user_profile.dict())
