@@ -2,6 +2,8 @@ import json
 
 import cloudinary.uploader
 from fastapi import UploadFile
+from starlette import status
+from starlette.responses import JSONResponse
 
 from app.common.user import get_current_user_id
 from app.user.model import User
@@ -21,12 +23,17 @@ class UserProfileService:
             photo=uploaded_photo["secure_url"]
         )
 
-        await User.get(id=current_user_id) \
-            .update(user_profile=user_profile)
+        user_obj = User.get(id=current_user_id)
 
-        await user_profile.save()
+        if user_obj:
+            await user_profile.save()
+            await user_obj.update(user_profile=user_profile)
+            return user_profile
 
-        return user_profile
+        return JSONResponse(
+            {"msg": "user doesnt exist"},
+            status.HTTP_400_BAD_REQUEST
+        )
 
     async def get_profile(self, auth_header: str):
         current_user_id = get_current_user_id(auth_header)
