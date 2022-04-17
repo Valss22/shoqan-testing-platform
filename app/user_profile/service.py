@@ -34,4 +34,8 @@ class UserProfileService:
             id=current_user_id
         ).prefetch_related("user_profile")
 
-        return user_obj._user_profile.__dict__
+        profile = user_obj._user_profile
+        if profile:
+            profile = profile.__dict__
+
+        return profile
