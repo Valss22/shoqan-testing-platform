@@ -37,4 +37,5 @@ class UserProfileService:
         await user_profile.save()
         await User.get(id=current_user_id) \
             .update(user_profile=user_profile)
+
         return user_profile

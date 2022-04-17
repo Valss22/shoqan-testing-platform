@@ -2,7 +2,7 @@ from typing import Optional
 
 from fastapi import APIRouter, File, Depends, Body, UploadFile, Header
 from app.user_profile.enums import Specialties, Courses
-from app.user_profile.schemas import UserProfileIn
+from app.user_profile.schemas import UserProfileIn, UserProfileOut
 from app.user_profile.service import UserProfileService
 
 user_profile_router = APIRouter(
@@ -24,7 +24,7 @@ user_profile_router = APIRouter(
 #         course=course, photo=photo, auth_header=Authorization
 #     )
 
-@user_profile_router.post('/')
+@user_profile_router.post('/', response_model=UserProfileOut)
 async def write_to_user_profile(
         user_profile: str = Body(..., alias="userProfile"),
         photo: UploadFile = File(...),
