@@ -37,6 +37,7 @@ class UserService:
 
         password: bytes = user.dict()["password"].encode()
         user_obj = await User.get(email=email)
+        print(user_obj.__dict__)
 
         if bcrypt.checkpw(password, user_obj.password_hash):
             payload: dict = {
