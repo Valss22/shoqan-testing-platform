@@ -37,6 +37,9 @@ class UserService:
 
         password: bytes = user.dict()["password"].encode()
         user_obj = await User.get(email=email).prefetch_related("user_profile")
+        profile = user_obj._user_profile
+        if profile:
+            profile = profile.__dict__
 
         if bcrypt.checkpw(password, user_obj.password_hash):
             payload: dict = {
@@ -49,7 +52,7 @@ class UserService:
                 **user_obj.__dict__,
                 "token": jwt.encode(payload, TOKEN_KEY),
                 "isAdmin": is_admin,
-                "profile": user_obj._user_profile.__dict__
+                "profile": profile
             }
         return JSONResponse(
             {"msg": "wrong password"},
