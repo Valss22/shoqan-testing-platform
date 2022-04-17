@@ -6,6 +6,7 @@ import jwt
 from pydantic import EmailStr
 from starlette import status
 from starlette.responses import JSONResponse
+from tortoise.queryset import QuerySet
 
 from app.admin.emails import admin_emails
 from app.settings import TOKEN_KEY, TOKEN_TIME
@@ -31,13 +32,11 @@ class UserService:
         smtp.quit()
 
     async def auth_user(self, user: UserIn) -> Union[None, dict, JSONResponse]:
-
         email: EmailStr = user.dict()["email"]
         is_admin: bool = email in admin_emails
 
         password: bytes = user.dict()["password"].encode()
-        user_obj = await User.get(email=email)
-        print(user_obj.__dict__)
+        user_obj = await User.get(email=email).prefetch_related("user_profile")
 
         if bcrypt.checkpw(password, user_obj.password_hash):
             payload: dict = {
@@ -49,7 +48,8 @@ class UserService:
             return {
                 **user_obj.__dict__,
                 "token": jwt.encode(payload, TOKEN_KEY),
-                "isAdmin": is_admin
+                "isAdmin": is_admin,
+                "profile": user_obj._user_profile.__dict__
             }
         return JSONResponse(
             {"msg": "wrong password"},
