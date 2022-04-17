@@ -37,6 +37,7 @@ class UserService:
 
         password: bytes = user.dict()["password"].encode()
         user_obj = await User.get(email=email).prefetch_related("user_profile")
+
         profile = user_obj._user_profile
         if profile:
             profile = profile.__dict__
