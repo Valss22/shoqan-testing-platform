@@ -21,9 +21,10 @@ class UserProfileService:
             photo=uploaded_photo["secure_url"]
         )
 
-        await user_profile.save()
         await User.get(id=current_user_id) \
             .update(user_profile=user_profile)
+
+        await user_profile.save()
 
         return user_profile
 
