@@ -1,9 +1,16 @@
 from pydantic import BaseModel
 
-from app.user_profile.types import University
+from app.user_profile.enums import Specialties, Courses
 
 
 class UserProfileIn(BaseModel):
+    fullname: str
+    specialty: Specialties
+    course: Courses
 
-    full_name: str
-    university: University
+
+class UserProfileOut(BaseModel):
+    fullname: str
+    specialty: Specialties
+    course: Courses
+    photo: str

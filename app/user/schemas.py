@@ -12,4 +12,5 @@ class UserOut(BaseModel):
     id: UUID
     email: EmailStr
     token: str
-    is_admin: bool = Field(alias='isAdmin')
+    is_admin: bool = Field(alias="isAdmin")
+    profile: Optional[dict]
