@@ -12,10 +12,10 @@ user_profile_router = APIRouter(
 
 @user_profile_router.post('/', response_model=UserProfileOut)
 async def write_to_profile(
-        user_profile: UploadFile = Body(..., alias="userProfile"),
-        photo: UploadFile = File(...),
-        Authorization: str = Header(None),
-        user_profile_service: UserProfileService = Depends()
+    user_profile: UploadFile = Body(..., alias="userProfile"),
+    photo: UploadFile = File(...),
+    Authorization: str = Header(None),
+    user_profile_service: UserProfileService = Depends()
 ):
     return await user_profile_service.write_to_profile(user_profile, photo, Authorization)
 

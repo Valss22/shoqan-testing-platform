@@ -1,5 +1,3 @@
-import json
-
 import cloudinary.uploader
 from fastapi import UploadFile
 from starlette import status
@@ -44,3 +42,4 @@ class UserProfileService:
             profile = profile.__dict__
 
         return profile
+

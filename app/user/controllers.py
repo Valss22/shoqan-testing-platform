@@ -17,7 +17,7 @@ async def register_user(user: UserIn, user_service: UserService = Depends()):
 
 @user_router.post("/login/", response_model=UserOut)
 async def login_user(
-        user: UserIn,
-        user_service: UserService = Depends()
+    user: UserIn,
+    user_service: UserService = Depends()
 ):
     return await user_service.auth_user(user)

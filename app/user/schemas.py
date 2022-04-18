@@ -15,5 +15,3 @@ class UserOut(BaseModel):
     email: EmailStr
     token: str
     is_admin: bool = Field(alias="isAdmin")
-    user_profile_id: Optional[UserProfileOut] = Field(alias="profile")
-
