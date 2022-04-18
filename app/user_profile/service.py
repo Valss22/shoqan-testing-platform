@@ -15,14 +15,15 @@ class UserProfileService:
         current_user_id = get_current_user_id(auth_header)
         user_obj = await User.get(id=current_user_id)
 
-        user_profile = user_profile.file.__dict__["_file"].read().decode("utf-8")
-        user_profile = await UserProfile.create(
-            **json.loads(user_profile),
+        user_profile_str = user_profile.file.__dict__["_file"].read().decode("utf-8")
+
+        user_profile_obj = await UserProfile.create(
+            **json.loads(user_profile_str),
             photo=uploaded_photo["secure_url"]
         )
-        await user_profile.save()
-        await user_obj.update(user_profile=user_profile)
-        return user_profile
+        await user_profile_obj.save()
+        await user_obj.update(user_profile=user_profile_obj)
+        return user_profile_obj
 
     async def get_profile(self, auth_header: str):
         current_user_id = get_current_user_id(auth_header)
