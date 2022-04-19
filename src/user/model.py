@@ -1,7 +1,7 @@
 import bcrypt
 from tortoise import fields, models
 
-from app.settings import SALT
+from src.settings import SALT
 
 
 class User(models.Model):

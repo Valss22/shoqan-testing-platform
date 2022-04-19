@@ -2,7 +2,7 @@ from typing import Optional
 from uuid import UUID
 from pydantic import BaseModel, EmailStr, Field
 
-from app.user_profile.schemas import UserProfileOut
+from src.user_profile.schemas import UserProfileOut
 
 
 class UserIn(BaseModel):

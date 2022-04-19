@@ -5,7 +5,9 @@ from starlette.middleware.cors import CORSMiddleware
 from tortoise.contrib.fastapi import register_tortoise
 import os
 from dotenv import load_dotenv
-from app.routers import api_router
+
+# from src.middlewares.auth import run_middleware
+from src.routers import api_router
 
 load_dotenv()
 app = FastAPI()
@@ -36,11 +38,16 @@ register_tortoise(
     # db_url=os.getenv("DATABASE_URL"),
 
     modules={"models": [
-        "app.user.model",
-        "app.user_profile.model"
+        "src.user.model",
+        "src.user_profile.model",
+        "src.competence.model",
+        "src.discipline.model",
+        "src.test.model",
     ]},
     generate_schemas=True,
     add_exception_handlers=True,
 )
 
 app.include_router(api_router)
+
+# run_middleware(app)

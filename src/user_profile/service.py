@@ -1,11 +1,8 @@
 import cloudinary.uploader
 from fastapi import UploadFile
-from starlette import status
-from starlette.responses import JSONResponse
-
-from app.common.user import get_current_user_id
-from app.user.model import User
-from app.user_profile.model import UserProfile
+from src.middlewares.auth import get_current_user_id
+from src.user.model import User
+from src.user_profile.model import UserProfile
 import json
 
 
@@ -14,7 +11,7 @@ class UserProfileService:
         uploaded_photo = cloudinary.uploader.upload(photo.file, resource_type="auto")
         current_user_id = get_current_user_id(auth_header)
 
-        user_obj = await User.get(id=current_user_id)
+        user_obj: User = await User.get(id=current_user_id)
 
         user_profile_str = user_profile.file.__dict__["_file"].read().decode("utf-8")
 
@@ -26,6 +23,7 @@ class UserProfileService:
         user_obj.user_profile = user_profile_obj
         await user_obj.save(update_fields=["user_profile_id"])
         return user_profile_obj
+        pass
 
     async def get_profile(self, auth_header: str):
         current_user_id = get_current_user_id(auth_header)
@@ -39,3 +37,4 @@ class UserProfileService:
             profile = profile.__dict__
 
         return profile
+

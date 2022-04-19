@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from app.user_profile.enums import Specialties, Courses
+from src.user_profile.types import Specialties, Courses
 
 
 class UserProfileIn(BaseModel):

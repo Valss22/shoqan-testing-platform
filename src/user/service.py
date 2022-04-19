@@ -8,10 +8,10 @@ from starlette import status
 from starlette.responses import JSONResponse
 from tortoise.queryset import QuerySet
 
-from app.admin.emails import admin_emails
-from app.settings import TOKEN_KEY, TOKEN_TIME
-from app.user.model import User
-from app.user.schemas import UserIn
+from src.admin.emails import admin_emails
+from src.settings import TOKEN_KEY, TOKEN_TIME
+from src.user.model import User
+from src.user.schemas import UserIn
 import smtplib
 import secrets
 

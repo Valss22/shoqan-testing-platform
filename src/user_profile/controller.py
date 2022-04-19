@@ -1,9 +1,9 @@
 from typing import Optional
 
 from fastapi import APIRouter, File, Depends, Body, UploadFile, Header
-from app.user_profile.enums import Specialties, Courses
-from app.user_profile.schemas import UserProfileIn, UserProfileOut
-from app.user_profile.service import UserProfileService
+from src.user_profile.types import Specialties, Courses
+from src.user_profile.schemas import UserProfileIn, UserProfileOut
+from src.user_profile.service import UserProfileService
 
 user_profile_router = APIRouter(
     prefix='/user/profile'

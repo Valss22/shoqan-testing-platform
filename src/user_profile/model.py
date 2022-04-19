@@ -1,6 +1,6 @@
 from tortoise import models, fields
 
-from app.user_profile.enums import Courses, Specialties
+from src.user_profile.types import Courses, Specialties
 
 
 class UserProfile(models.Model):
@@ -9,3 +9,4 @@ class UserProfile(models.Model):
     specialty = fields.CharEnumField(Specialties)
     course = fields.CharEnumField(Courses)
     photo = fields.CharField(max_length=150)
+

@@ -2,8 +2,8 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends, Header
 
-from app.user.schemas import UserIn, UserOut
-from app.user.service import UserService
+from src.user.schemas import UserIn, UserOut
+from src.user.service import UserService
 
 user_router = APIRouter(
     prefix="/user"
