@@ -5,8 +5,7 @@ from starlette.middleware.cors import CORSMiddleware
 from tortoise.contrib.fastapi import register_tortoise
 import os
 from dotenv import load_dotenv
-
-# from src.middlewares.auth import run_middleware
+from src.middlewares.auth import run_auth_middleware
 from src.routers import api_router
 
 load_dotenv()
@@ -50,4 +49,4 @@ register_tortoise(
 
 app.include_router(api_router)
 
-# run_middleware(app)
+run_auth_middleware(app)

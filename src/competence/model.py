@@ -9,8 +9,10 @@ class Competence(models.Model):
     disciplinies = fields.ManyToManyField(
         "models.Discipline",
         on_delete="SET NULL",
+        null=True
     )
     owners = fields.ManyToManyField(
         "models.User",
-        on_delete="SET NULL", null=True
+        on_delete="SET NULL",
+        null=True
     )
