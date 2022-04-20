@@ -12,9 +12,7 @@ from src.user.model import User
 
 
 class TestService:
-    async def create_test(self, info: UploadFile, file: UploadFile, auth_header: str):
-        current_user_id = get_current_user_id(auth_header)
-        current_user = await User.get(id=current_user_id)
+    async def create_test(self, info: UploadFile, file: UploadFile):
 
         uploaded_file = cloud.upload(file.file, resource_type="auto")
         info_str: str = info.file.__dict__["_file"].read().decode("utf-8")
@@ -23,13 +21,19 @@ class TestService:
         discipline, need_to_create = await Discipline.get_or_create(name=info_obj["discipline"])
         if need_to_create:
             await discipline.save()
-        await Test.create(file=uploaded_file["secure_url"], discipline=discipline)
+
+        test = await Test.create(
+            file=uploaded_file["secure_url"],
+            discipline=discipline
+        )
+        await test.save()
+
         competencies: list[Competencies] = info_obj["competencies"]
 
         for comp in competencies:
             competence, need_to_create = await Competence.get_or_create(name=comp)
             await competence.disciplinies.add(discipline)
-            await competence.owners.add(current_user)
+            if comp not in test.competencies:
+                test.competencies.add(competence)
             if need_to_create:
                 await competence.save()
-

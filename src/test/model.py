@@ -9,3 +9,8 @@ class Test(models.Model):
         on_delete="SET NULL",
         null=True
     )
+    competencies = fields.ManyToManyField(
+        "models.Competence",
+        on_delete="SET NULL",
+        null=True
+    )
