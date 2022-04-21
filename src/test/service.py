@@ -36,7 +36,7 @@ class TestService:
             competence, need_to_create = await Competence.get_or_create(name=comp)
 
             await competence.disciplinies.add(discipline)
-            await test.competencies.add(competence)
-
             if need_to_create:
                 await competence.save()
+
+            await test.competencies.add(competence)
