@@ -10,3 +10,15 @@ class Courses(Enum):
 
 class Specialties(Enum):
     ONE = "Корпоративные информационные системы"
+
+
+class StressResistance(Enum):
+    ONE = "очень низкий"
+    TWO = "низкий"
+    THREE = "ниже среднего"
+    FOUR = "чуть ниже среднего"
+    FIVE = "средний"
+    SIX = "чуть выше среднего"
+    SEVEN = "выше среднего"
+    EIGHT = "высокий"
+    NINE = "очень высокий"
