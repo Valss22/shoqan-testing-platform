@@ -8,7 +8,7 @@ stress_router = APIRouter(
 )
 
 
-@stress_router.get("/stress")
+@stress_router.get("/stress", response_model=StressOut)
 async def get_stress_result(
     Authorization: str = Header(...),
     stress_service: StressService = Depends()

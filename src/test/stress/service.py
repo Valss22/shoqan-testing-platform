@@ -21,4 +21,5 @@ class StressService:
             if user_profile.stress:
                 return JSONResponse({"passed": True, "test": stress_obj})
             return JSONResponse({"passed": False, "test": None})
+
         raise Exception  # TODO: сделать искл. и мидл
