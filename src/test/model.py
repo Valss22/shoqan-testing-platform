@@ -39,4 +39,4 @@ class UserToTest(models.Model):
         validators=[validate_range_number],
         null=True
     )
-    is_passed = fields.BooleanField(null=True)
+    passed = fields.BooleanField(null=True)

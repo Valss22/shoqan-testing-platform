@@ -1,14 +1,13 @@
 from time import time
-from typing import Union, Optional
+from typing import Union
 
 import bcrypt
 import jwt
 from pydantic import EmailStr
 from starlette import status
 from starlette.responses import JSONResponse
-from tortoise.queryset import QuerySet
 
-from src.admin.emails import admin_emails
+from src.static.emails import admin_emails
 from src.settings import TOKEN_KEY, TOKEN_TIME
 from src.user.model import User
 from src.user.schemas import UserIn
@@ -36,17 +35,17 @@ class UserService:
         is_admin: bool = email in admin_emails
 
         password: bytes = user.dict()["password"].encode()
-        user_obj = await User.get(email=email)
+        current_user = await User.get(email=email)
 
-        if bcrypt.checkpw(password, user_obj.password_hash):
+        if bcrypt.checkpw(password, current_user.password_hash):
             payload: dict = {
-                "id": str(user_obj.id),
-                "email": user_obj.email,
+                "id": str(current_user.id),
+                "email": current_user.email,
                 "isAdmin": is_admin,
                 "exp": time() + TOKEN_TIME
             }
             return {
-                **user_obj.__dict__,
+                **current_user.__dict__,
                 "token": jwt.encode(payload, TOKEN_KEY),
                 "isAdmin": is_admin,
             }

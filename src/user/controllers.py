@@ -1,6 +1,4 @@
-from typing import Optional
-
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends
 
 from src.user.schemas import UserIn, UserOut
 from src.user.service import UserService

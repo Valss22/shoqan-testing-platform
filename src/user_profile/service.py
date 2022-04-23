@@ -1,6 +1,6 @@
 import cloudinary.uploader as cloud
 from fastapi import UploadFile
-from src.middlewares.auth import get_current_user_id
+from src.middlewares.auth import get_current_user, get_current_user_id
 from src.user.model import User
 from src.user_profile.model import UserProfile
 import json
@@ -12,16 +12,16 @@ class UserProfileService:
         photo: UploadFile, auth_header: str
     ):
         uploaded_photo = cloud.upload(photo.file, resource_type="auto")
-        current_user_id = get_current_user_id(auth_header)
-        user_obj: User = await User.get(id=current_user_id)
+
+        current_user: User = await get_current_user(auth_header)
         user_profile_str = user_profile.file.__dict__["_file"].read().decode("utf-8")
         user_profile_obj = await UserProfile.create(
             **json.loads(user_profile_str),
             photo=uploaded_photo["secure_url"]
         )
         await user_profile_obj.save()
-        user_obj.user_profile = user_profile_obj
-        await user_obj.save(update_fields=["user_profile_id"])
+        current_user.user_profile = user_profile_obj
+        await current_user.save(update_fields=["user_profile_id"])
         return user_profile_obj
 
     async def get_profile(self, auth_header: str):
