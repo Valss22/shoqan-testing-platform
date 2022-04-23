@@ -20,7 +20,7 @@ class Test(models.Model):
         "models.User",
         on_delete="SET NULL",
         null=True,
-        through="models.UserToTest"
+        through="UserToTest"
     )
 
 

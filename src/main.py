@@ -49,4 +49,4 @@ register_tortoise(
 
 app.include_router(api_router)
 
-#run_auth_middleware(app)
+# run_auth_middleware(app)

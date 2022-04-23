@@ -8,7 +8,7 @@ class User(models.Model):
     id = fields.UUIDField(pk=True)
     email = fields.CharField(max_length=128, unique=True)
     password_hash = fields.BinaryField()
-    user_profile = fields.OneToOneField('models.UserProfile', on_delete="SET NULL", null=True)
+    user_profile = fields.OneToOneField("models.UserProfile", on_delete="SET NULL", null=True)
 
     async def save(self, *args, **kwargs):
         self.password_hash = bcrypt.hashpw(self.password_hash, SALT)
