@@ -15,11 +15,13 @@ class StressService:
 
         current_user: User = await get_current_user(auth_header)
 
-        user_profile: Optional[UserProfile] = await current_user.fetch_related("user_profile")
+        await current_user.fetch_related("user_profile")
+
+        user_profile = current_user.user_profile
 
         if user_profile:
             if user_profile.stress:
-                return JSONResponse({"passed": True, "test": stress_obj})
-            return JSONResponse({"passed": False, "test": None})
+                return JSONResponse({"passed": True, "test": None})
+            return JSONResponse({"passed": False, "test": stress_obj})
 
         raise Exception  # TODO: сделать искл. и мидл
