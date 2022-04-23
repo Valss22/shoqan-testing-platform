@@ -1,8 +1,28 @@
+from src.user_profile.types import StressLevels
+
 SELDOM = "редко"
 SOMETIMES = "иногда"
 OFTEN = "часто"
 
 answers = [SELDOM, SOMETIMES, OFTEN]
+
+answer_scores: dict[str, int] = {
+    SELDOM: 1,
+    SOMETIMES: 2,
+    OFTEN: 3
+}
+
+stress_lvl: dict[StressLevels, range] = {
+    StressLevels.ONE: range(50, 54),
+    StressLevels.TWO: range(46, 50),
+    StressLevels.THREE: range(42, 46),
+    StressLevels.FOUR: range(38, 42),
+    StressLevels.FIVE: range(34, 38),
+    StressLevels.SIX: range(30, 34),
+    StressLevels.SEVEN: range(26, 30),
+    StressLevels.EIGHT: range(22, 26),
+    StressLevels.NINE: range(18, 22),
+}
 
 stress_obj: list[dict] = [
     {

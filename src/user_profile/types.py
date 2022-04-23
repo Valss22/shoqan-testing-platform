@@ -12,7 +12,7 @@ class Specialties(Enum):
     ONE = "Корпоративные информационные системы"
 
 
-class StressResistance(Enum):
+class StressLevels(Enum):
     ONE = "очень низкий"
     TWO = "низкий"
     THREE = "ниже среднего"

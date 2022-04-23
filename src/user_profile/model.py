@@ -1,6 +1,6 @@
 from tortoise import models, fields
 
-from src.user_profile.types import Courses, Specialties, StressResistance
+from src.user_profile.types import Courses, Specialties, StressLevels
 
 
 class UserProfile(models.Model):
@@ -9,4 +9,4 @@ class UserProfile(models.Model):
     specialty = fields.CharEnumField(Specialties)
     course = fields.CharEnumField(Courses)
     photo = fields.CharField(max_length=150)
-    stress = fields.CharEnumField(StressResistance, null=True)
+    stress = fields.CharEnumField(StressLevels, null=True)
