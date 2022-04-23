@@ -14,10 +14,6 @@ stress_obj: list[dict] = [
         "answers": answers
     },
     {
-        "question": "Я думаю, что меня недооценивают в коллективе",
-        "answers": answers
-    },
-    {
         "question": "Я постоянно переживаю за качество своей работы",
         "answers": answers
     },

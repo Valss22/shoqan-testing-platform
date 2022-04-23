@@ -3,7 +3,7 @@ from typing import Optional
 from starlette.responses import JSONResponse
 
 from src.middlewares.auth import get_current_user, get_current_user_id
-from src.static.psychology import stress_obj
+from src.static.stress import stress_obj
 from src.user.model import User
 from src.user_profile.model import UserProfile
 

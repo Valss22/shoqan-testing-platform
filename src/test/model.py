@@ -20,7 +20,7 @@ class Test(models.Model):
         "models.User",
         on_delete="SET NULL",
         null=True,
-        through="UserToTest"
+        through="user_to_test"
     )
 
 
@@ -40,3 +40,6 @@ class UserToTest(models.Model):
         null=True
     )
     passed = fields.BooleanField(null=True)
+
+    class Meta:
+        table = "user_to_test"
