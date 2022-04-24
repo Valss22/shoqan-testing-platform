@@ -27,7 +27,7 @@ class TestService:
         # }
 
         discipline, need_to_create = await Discipline.get_or_create(
-            name=info_obj[InfoKeys.DISCIPLINE]
+            name=info_obj[InfoKeys.DISCIPLINE.value]
         )
         if need_to_create:
             await discipline.save()
@@ -38,7 +38,7 @@ class TestService:
         )
         await test.save()
 
-        competencies: list[Competencies] = info_obj[InfoKeys.COMPETENCIES]
+        competencies: list[Competencies] = info_obj[InfoKeys.COMPETENCIES.value]
 
         for comp in competencies:
             competence, need_to_create = await Competence.get_or_create(name=comp)
