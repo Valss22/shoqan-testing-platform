@@ -55,7 +55,11 @@ class TestService:
             await test.competencies.add(competence)
 
     async def get_tests(self, discipline: Disciplines):
-        tests: list[Test] = await Test.filter(discipline__name=discipline).prefetch_related("users")
+        tests: list[Test] = await Test.filter(
+            discipline__name=discipline
+        ).prefetch_related("users__passed")
+
+
         # user_id = get_current_user_id(auth_header)
 
         # response = []
