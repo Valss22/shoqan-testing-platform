@@ -6,6 +6,7 @@ from src.test.validators import validate_range_number
 class Test(models.Model):
     id = fields.UUIDField(pk=True)
     file = fields.CharField(max_length=150)
+    filename = fields.CharField(max_length=150)
     discipline = fields.ForeignKeyField(
         "models.Discipline",
         on_delete="SET NULL",

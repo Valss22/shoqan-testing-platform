@@ -12,8 +12,12 @@ from src.test.types import InfoKeys
 
 class TestService:
     async def create_test(self, info: UploadFile, file: UploadFile):
+        filename = file.filename.split(".docx")[0]
+
         uploaded_file = cloud.upload(file.file, resource_type="auto")
+
         info_str: str = info.file.__dict__["_file"].read().decode("utf-8")
+
         info_obj: dict[
             InfoKeys,
             Union[Discipline, list[Competencies]]
@@ -34,6 +38,7 @@ class TestService:
 
         test = await Test.create(
             file=uploaded_file["secure_url"],
+            filename=filename,
             discipline=discipline
         )
         await test.save()

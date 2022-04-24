@@ -1,7 +1,6 @@
 from typing import Optional
 
 from starlette.responses import JSONResponse
-
 from src.middlewares.auth import get_current_user, get_current_user_id
 from src.static.stress import stress_obj, answer_scores, stress_lvl
 from src.test.stress.schemas import StressIn
@@ -41,4 +40,3 @@ class StressService:
                 user_profile.stress = key.value
                 await user_profile.save(update_fields=["stress"])
                 break
-
