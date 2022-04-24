@@ -55,17 +55,17 @@ class TestService:
             await test.competencies.add(competence)
 
     async def get_tests(self, discipline: Disciplines):
-        tests: list[Test] = await Test.filter(discipline__name=discipline)
+        tests: list[Test] = await Test.filter(discipline__name=discipline).prefetch_related("users")
         # user_id = get_current_user_id(auth_header)
 
         # response = []
 
-        for test in tests:
-            await test.fetch_related("users")
+        # for test in tests:
+        #     await test.fetch_related("users")
 
-            # if user_id in test.users:
-            #     response.append({**test, "passed": True})
-            # else:
-            #     response.append({**test, "passed": False})
+        # if user_id in test.users:
+        #     response.append({**test, "passed": True})
+        # else:
+        #     response.append({**test, "passed": False})
 
         return tests
