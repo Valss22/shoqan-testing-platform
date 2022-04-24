@@ -8,7 +8,7 @@ from src.competence.types import Competencies
 from src.discipline.model import Discipline
 from src.discipline.types import Disciplines
 from src.middlewares.auth import get_current_user_id
-from src.test.model import Test
+from src.test.model import Test, UserToTest
 from src.test.types import InfoKeys
 
 
@@ -54,22 +54,24 @@ class TestService:
                 await competence.save()
             await test.competencies.add(competence)
 
-    async def get_tests(self, discipline: Disciplines):
+    async def get_tests(self, discipline: Disciplines, auth_header: str):
         tests: list[Test] = await Test.filter(
             discipline__name=discipline
-        ).prefetch_related("users__passed")
+        ).prefetch_related("users")
 
+        user_id = get_current_user_id(auth_header)
 
-        # user_id = get_current_user_id(auth_header)
+        response: list[dict] = []
 
-        # response = []
+        i: int = 0
+        for test in tests:
+            user_test: UserToTest = await test.users.get(user_id=user_id)
+            response.append({"passed": user_test.passed})
+            response[i].update(test)
 
-        # for test in tests:
-        #     await test.fetch_related("users")
+            # if user_id in test.users:
+            #     response.append({**test, "passed": True})
+            # else:
+            #     response.append({**test, "passed": False})
 
-        # if user_id in test.users:
-        #     response.append({**test, "passed": True})
-        # else:
-        #     response.append({**test, "passed": False})
-
-        return tests
+        return response
