@@ -56,15 +56,16 @@ class TestService:
 
     async def get_tests(self, discipline: Disciplines, auth_header):
         tests: list[Test] = await Test.filter(discipline__name=discipline)
-        user_id = get_current_user_id(auth_header)
+        # user_id = get_current_user_id(auth_header)
 
-        response = []
+        # response = []
 
         for test in tests:
             await test.fetch_related("users")
-            if user_id in test.users:
-                response.append({**test, "passed": True})
-            else:
-                response.append({**test, "passed": False})
 
-        return response
+            # if user_id in test.users:
+            #     response.append({**test, "passed": True})
+            # else:
+            #     response.append({**test, "passed": False})
+
+        return tests
