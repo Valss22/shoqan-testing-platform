@@ -1,5 +1,5 @@
 import json
-from typing import Union
+from typing import Union, Optional
 
 from fastapi import UploadFile
 import cloudinary.uploader as cloud
@@ -65,7 +65,7 @@ class TestService:
 
         i: int = 0
         for test in tests:
-            user_test: UserToTest = await test.users.filter(id=user_id).first()
+            user_test: Optional[UserToTest] = await test.users.filter(id=user_id).first()
             if user_test:
                 response.append({"passed": user_test.passed})
             else:
