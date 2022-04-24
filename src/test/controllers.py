@@ -18,7 +18,7 @@ async def create_test(
     return await test_service.create_test(info, file)
 
 
-@test_router.get("/", response_model=list[TestOut])
+@test_router.get("/")
 async def get_tests(
     discipline: Disciplines,
     test_service: TestService = Depends()
