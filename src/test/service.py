@@ -54,7 +54,7 @@ class TestService:
                 await competence.save()
             await test.competencies.add(competence)
 
-    async def get_tests(self, discipline: Disciplines, auth_header):
+    async def get_tests(self, discipline: Disciplines):
         tests: list[Test] = await Test.filter(discipline__name=discipline)
         # user_id = get_current_user_id(auth_header)
 
