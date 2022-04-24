@@ -67,8 +67,8 @@ class TestService:
         for test in tests:
             user_test: UserToTest = await test.users.get(user_id=user_id)
             response.append({"passed": user_test.passed})
-            response[i].update(test)
-
+            response[i].update(test.__dict__)
+            i += 1
             # if user_id in test.users:
             #     response.append({**test, "passed": True})
             # else:
