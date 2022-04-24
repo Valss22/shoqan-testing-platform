@@ -65,13 +65,14 @@ class TestService:
 
         i: int = 0
         for test in tests:
-            user_test: Optional[UserToTest] = await test.users.filter(id=user_id).first()
+            user_test: Optional[UserToTest] = await test.users.filter(user__id=user_id).first()
             if user_test:
                 response.append({"passed": user_test.passed})
             else:
                 response.append({"passed": None})
             response[i].update(test.__dict__)
             i += 1
+
             # if user_id in test.users:
             #     response.append({**test, "passed": True})
             # else:
