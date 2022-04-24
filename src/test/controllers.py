@@ -1,6 +1,7 @@
-from fastapi import APIRouter, UploadFile, Body, Depends
-from fastapi.params import File
+from fastapi import APIRouter, UploadFile, Body, Depends, Header, File
 
+from src.discipline.types import Disciplines
+from src.test.schemas import TestOut
 from src.test.service import TestService
 
 test_router = APIRouter(
@@ -17,4 +18,10 @@ async def create_test(
     return await test_service.create_test(info, file)
 
 
-
+@test_router.get("/", response_model=list[TestOut])
+async def get_tests(
+    discipline: Disciplines,
+    Authorization: str = Header(...),
+    test_service: TestService = Depends()
+):
+    return await test_service.get_tests(discipline, Authorization)

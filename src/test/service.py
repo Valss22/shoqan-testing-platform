@@ -6,6 +6,8 @@ import cloudinary.uploader as cloud
 from src.competence.model import Competence
 from src.competence.types import Competencies
 from src.discipline.model import Discipline
+from src.discipline.types import Disciplines
+from src.middlewares.auth import get_current_user_id
 from src.test.model import Test
 from src.test.types import InfoKeys
 
@@ -51,3 +53,18 @@ class TestService:
             if need_to_create:
                 await competence.save()
             await test.competencies.add(competence)
+
+    async def get_tests(self, discipline: Disciplines, auth_header):
+        tests: list[Test] = await Test.filter(discipline__name=discipline)
+        user_id = get_current_user_id(auth_header)
+
+        response = []
+
+        for test in tests:
+            await test.fetch_related("users")
+            if user_id in test.users:
+                response.append({**test, "passed": True})
+            else:
+                response.append({**test, "passed": False})
+
+        return response
