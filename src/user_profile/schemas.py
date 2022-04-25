@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 from src.user_profile.types import Specialties, Courses, StressLevels
@@ -14,4 +16,4 @@ class UserProfileOut(BaseModel):
     specialty: Specialties
     course: Courses
     photo: str
-    stress: StressLevels
+    stress: Optional[StressLevels]
