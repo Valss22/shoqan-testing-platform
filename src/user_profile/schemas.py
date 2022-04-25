@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from src.user_profile.types import Specialties, Courses
+from src.user_profile.types import Specialties, Courses, StressLevels
 
 
 class UserProfileIn(BaseModel):
@@ -14,3 +14,4 @@ class UserProfileOut(BaseModel):
     specialty: Specialties
     course: Courses
     photo: str
+    stress: StressLevels
