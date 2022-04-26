@@ -19,6 +19,7 @@ class UserService:
     async def create_user(self, user: UserIn) -> Optional[JSONResponse]:
         password: Union[str, bytes] = secrets.token_urlsafe(4)
         email: EmailStr = user.dict()["email"]
+        ##
 
         if await User.filter(email=email):
             return JSONResponse({
