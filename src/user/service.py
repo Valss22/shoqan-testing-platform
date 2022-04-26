@@ -1,5 +1,5 @@
 from time import time
-from typing import Union
+from typing import Union, Optional
 
 import bcrypt
 import jwt
@@ -16,9 +16,15 @@ import secrets
 
 
 class UserService:
-    async def create_user(self, user: UserIn) -> None:
+    async def create_user(self, user: UserIn) -> Optional[JSONResponse]:
         password: Union[str, bytes] = secrets.token_urlsafe(4)
         email: EmailStr = user.dict()["email"]
+
+        if await User.filter(email=email):
+            return JSONResponse({
+                "msg": "user already exists"
+            }, status.HTTP_400_BAD_REQUEST)
+
         self.send_password_to_email(password, email)
         password = password.encode()
         await User.create(**user.dict(), password_hash=password)
