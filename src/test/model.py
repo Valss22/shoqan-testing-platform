@@ -42,7 +42,7 @@ class UserToTest(models.Model):
     )
     passed = fields.BooleanField(null=True)
 
-    attempts = fields.SmallIntField(default=3)
+    attempts = fields.SmallIntField(default=1)
 
     class Meta:
         table = "user_to_test"
