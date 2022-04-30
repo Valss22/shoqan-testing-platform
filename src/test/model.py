@@ -1,6 +1,6 @@
 from tortoise import models, fields
 
-from src.test.validators import validate_range_number
+from src.test.validators import validate_range_score
 
 
 class Test(models.Model):
@@ -37,10 +37,12 @@ class UserToTest(models.Model):
         null=True
     )
     score = fields.SmallIntField(
-        validators=[validate_range_number],
+        validators=[validate_range_score],
         null=True
     )
     passed = fields.BooleanField(null=True)
+
+    attempts = fields.SmallIntField(default=3)
 
     class Meta:
         table = "user_to_test"

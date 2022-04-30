@@ -23,3 +23,4 @@ async def get_profile(
     user_profile_service: UserProfileService = Depends()
 ):
     return await user_profile_service.get_profile(Authorization)
+  

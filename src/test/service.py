@@ -73,9 +73,4 @@ class TestService:
             response[i].update(test.__dict__)
             i += 1
 
-            # if user_id in test.users:
-            #     response.append({**test, "passed": True})
-            # else:
-            #     response.append({**test, "passed": False})
-
         return response
