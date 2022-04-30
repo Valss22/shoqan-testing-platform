@@ -22,7 +22,7 @@ class UserService:
 
         if await User.filter(email=email):
             return JSONResponse({
-                "msg": "user already exists"
+                "msg": "Данный пользователь уже существует"
             }, status.HTTP_400_BAD_REQUEST)
 
         self.send_password_to_email(password, email)
@@ -56,6 +56,6 @@ class UserService:
                 "isAdmin": is_admin,
             }
         return JSONResponse(
-            {"msg": "wrong password"},
+            {"msg": "Неверный пароль"},
             status.HTTP_400_BAD_REQUEST
         )
