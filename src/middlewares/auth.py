@@ -25,11 +25,11 @@ def run_auth_middleware(app: FastAPI):
 
             if e == InvalidTokenError:
                 return JSONResponse(
-                    {"msg": "token has expired"},
+                    {"detail": "token has expired"},
                     status.HTTP_400_BAD_REQUEST
                 )
             return JSONResponse(
-                {"msg": "invalid token"},
+                {"detail": "invalid token"},
                 status.HTTP_400_BAD_REQUEST
             )
 
