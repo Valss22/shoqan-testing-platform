@@ -8,4 +8,4 @@ class TestOut(BaseModel):
     id: UUID
     filename: str
     passed: Optional[bool]
-    attempts: Optional[int]
+    attempts: int
