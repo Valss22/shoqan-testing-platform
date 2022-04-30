@@ -6,6 +6,7 @@ import jwt
 from pydantic import EmailStr
 from starlette import status
 from starlette.responses import JSONResponse
+from tortoise.exceptions import DoesNotExist
 
 from src.static.emails import admin_emails
 from src.settings import TOKEN_KEY, TOKEN_TIME
@@ -22,7 +23,7 @@ class UserService:
 
         if await User.filter(email=email):
             return JSONResponse({
-                "msg": "Данный пользователь уже существует"
+                "detail": "Данный пользователь уже существует"
             }, status.HTTP_400_BAD_REQUEST)
 
         self.send_password_to_email(password, email)
@@ -41,7 +42,13 @@ class UserService:
         is_admin: bool = email in admin_emails
 
         password: bytes = user.dict()["password"].encode()
-        current_user = await User.get(email=email)
+        try:
+            current_user = await User.get(email=email)
+        except DoesNotExist:
+            return JSONResponse(
+                {"detail": "Данного пользователя не существует"},
+                status.HTTP_400_BAD_REQUEST
+            )
 
         if bcrypt.checkpw(password, current_user.password_hash):
             payload: dict = {
@@ -56,6 +63,6 @@ class UserService:
                 "isAdmin": is_admin,
             }
         return JSONResponse(
-            {"msg": "Неверный пароль"},
+            {"detail": "Неверный пароль"},
             status.HTTP_400_BAD_REQUEST
         )
