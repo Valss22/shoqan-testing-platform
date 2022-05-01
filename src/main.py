@@ -1,7 +1,6 @@
 # type: ignore
 import cloudinary
 from fastapi import FastAPI
-from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from starlette import status
 from starlette.middleware.cors import CORSMiddleware
@@ -61,4 +60,8 @@ app.include_router(api_router)
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    return JSONResponse({"detail": exc.errors()[0]["msg"]}, status.HTTP_400_BAD_REQUEST)
+    if exc.errors()[0]["type"] == "value_error.email":
+        return JSONResponse(
+            {"detail": "Неправильный формат почты"},
+            status.HTTP_400_BAD_REQUEST
+        )
