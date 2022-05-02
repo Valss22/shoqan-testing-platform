@@ -16,7 +16,7 @@ class TestService:
     async def create_test(self, info: UploadFile, file: UploadFile):
         filename = file.filename.split(".docx")[0]
 
-        uploaded_file = cloud.upload(file.file, resource_type="docx")
+        uploaded_file = cloud.upload(file.file, resource_type="auto")
 
         info_str: str = info.file.__dict__["_file"].read().decode("utf-8")
 
