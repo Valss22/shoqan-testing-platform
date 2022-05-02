@@ -33,3 +33,4 @@ class UserProfileService:
         if profile:
             profile = profile.__dict__
         return profile
+ 

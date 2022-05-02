@@ -1,8 +1,10 @@
+from typing import Final
+
 from src.user_profile.types import StressLevels
 
-SELDOM = "редко"
-SOMETIMES = "иногда"
-OFTEN = "часто"
+SELDOM: Final[str] = "редко"
+SOMETIMES: Final[str] = "иногда"
+OFTEN: Final[str] = "часто"
 
 answers = [SELDOM, SOMETIMES, OFTEN]
 
