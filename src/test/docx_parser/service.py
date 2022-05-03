@@ -1,10 +1,13 @@
 from typing import Final
 from random import shuffle
+
 from docx import Document
 import re
-
+import shutil
+import requests
 
 from src.test.model import Test
+from src.user.model import User
 
 NUMBER_QUESTIONS: Final[int] = 30
 NUMBER_ANSWERS: Final[int] = 5
@@ -20,11 +23,15 @@ class ParserService:
         answers = []
         docx_response: list[dict] = []
 
-        #docx_file = await Test.get(id=test_id).only("file")
-        docx_file = "https://res.cloudinary.com/dmh0ekjaw/raw/upload/v1651494632/scywbbwswdrujg1ktynu"
+        docx_url = await Test.get(id=test_id).only("file")
+        docx_url = docx_url.file
 
+        docx_url_response = requests.get(docx_url, stream=True)
+        with open("src/static/test.docx", "wb") as out_file:
+            shutil.copyfileobj(docx_url_response.raw, out_file)
+        del docx_url_response
 
-        document = Document(docx_file)
+        document = Document("src/static/test.docx")
         blocks: list[str] = [block.text for block in document.paragraphs]
 
         for i in blocks:
