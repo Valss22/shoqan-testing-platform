@@ -1,15 +1,26 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Header
 
+from src.test.docx_parser.schemas import PassTestIn, PassTestOut
 from src.test.docx_parser.service import ParserService
 
 parser_router = APIRouter(
-    prefix="/test"
+    prefix="/test/{test_id}"
 )
 
 
-@parser_router.get("/{test_id}")
+@parser_router.get("/")
 async def get_parsed_docx(
     test_id: str,
     parser_service: ParserService = Depends()
 ):
-    return await parser_service.parse_docx(test_id)
+    return await parser_service.get_parsed_docx(test_id)
+
+
+@parser_router.post("/", response_model=PassTestOut)
+async def pass_test(
+    test_id: str,
+    answers: PassTestIn,
+    Authorization: str = Header(...),
+    parser_service: ParserService = Depends()
+):
+    return await parser_service.get_points(test_id, Authorization, answers)

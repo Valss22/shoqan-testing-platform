@@ -36,6 +36,7 @@ def run_auth_middleware(app: FastAPI):
     return is_auth
 
 
+# TODO Переместить в другое место
 async def get_current_user(auth_header: str) -> User:
     decoded_token: dict = jwt.decode(
         auth_header.split(" ")[1],
