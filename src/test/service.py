@@ -63,11 +63,10 @@ class TestService:
         for test in tests:
             # user_test: Optional[UserToTest] = await test.users.filter(id=user_id).first()
             try:
-                user_test: UserToTest = await UserToTest.get(user_id=user_id, test_id=test.id)
+                user_test: UserToTest = await UserToTest.get(test_id=test.id)
             except DoesNotExist:
                 continue
-
-            if user_test:
+            if user_test.user.id == user_id:
                 response.append({"passed": user_test.passed})
             else:
                 response.append({"passed": None})
