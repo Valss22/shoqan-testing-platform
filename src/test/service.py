@@ -3,6 +3,8 @@ from typing import Union, Optional, Final
 
 from fastapi import UploadFile
 import cloudinary.uploader as cloud
+from tortoise.exceptions import DoesNotExist
+
 from src.competence.model import Competence
 from src.competence.types import Competencies
 from src.discipline.model import Discipline
@@ -60,7 +62,11 @@ class TestService:
         i = 0
         for test in tests:
             # user_test: Optional[UserToTest] = await test.users.filter(id=user_id).first()
-            user_test: UserToTest = await UserToTest.get(user_id=user_id, test_id=test.id)
+            try:
+                user_test: UserToTest = await UserToTest.get(user_id=user_id, test_id=test.id)
+            except DoesNotExist:
+                continue
+
             if user_test:
                 response.append({"passed": user_test.passed})
             else:
@@ -82,7 +88,8 @@ class TestService:
         if score >= SCORE_THRESHOLD:
             user_test.passed = True
         else:
-            user_test.passed = False
             user_test.attempts += 1
+            if user_test.attempts == 3:
+                user_test.passed = False
         user_test.score = score
         await user_test.save(update_fields=["score", "passed", "attempts"])
