@@ -67,16 +67,17 @@ class ParserService:
         n_a = 0
         for i in blocks:
             if ANSWER_TAG in i:
-                if n_a == 0:
+                if n_a % 5 == 0 or n_a == 0:
                     answer = i.split(ANSWER_TAG)[1].strip()
                     answer = re.sub(r"\t", " ", answer)
                     if answer == answers[n_q]:
                         score += 1
-                else:
-                    if n_a == 4:
-                        n_a = 0
-                    else:
-                        n_a += 1
+                # else:
+                #     if n_a == 4:
+                #         n_a = 0
+                #     else:
+                #         n_a += 1
+                n_a += 1
             elif QUESTION_TAG in i:
                 n_q += 1
         await self.test_service.write_result(test_id, auth_header, score)
