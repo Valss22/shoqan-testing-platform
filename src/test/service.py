@@ -10,6 +10,7 @@ from src.discipline.types import Disciplines
 from src.middlewares.auth import get_current_user_id
 from src.test.model import Test, UserToTest
 from src.test.types import InfoKeys
+from src.user.model import User
 
 SCORE_THRESHOLD: Final[int] = 15
 
@@ -74,6 +75,10 @@ class TestService:
         test = await Test.get(id=test_id).prefetch_related("users")
         user_test: Optional[UserToTest] = await test. \
             users.filter(id=user_id).first()
+
+        if not user_test:
+            test.users = await User.get(id=user_id)
+            await test.save(update_fields=["users"])
 
         if score >= SCORE_THRESHOLD:
             user_test.score = score
