@@ -72,17 +72,14 @@ class TestService:
 
     async def write_result(self, test_id: str, auth_header: str, score: int) -> None:
         user_id = get_current_user_id(auth_header)
-        test: Test = await Test.get(id=test_id).prefetch_related("users")
-        user_test: Optional[UserToTest] = await test. \
-            users.filter(id=user_id).first()
-
-        if not user_test:
+        # test: Test = await Test.get(id=test_id).prefetch_related("users")
+        try:
+            user_test: UserToTest = await UserToTest.get(user_id=user_id, test_id=test_id)
+        except:
             user = await User.get(id=user_id)
-            await test.users.add(user)
+            test = await Test.get(id=test_id)
+            user_test: UserToTest = await UserToTest.create(user=user, test=test)
 
-            test: Test = await Test.get(id=test_id).prefetch_related("users")
-            user_test: UserToTest = await test. \
-                users.filter(id=user_id).first()
 
         if score >= SCORE_THRESHOLD:
             user_test.score = score
