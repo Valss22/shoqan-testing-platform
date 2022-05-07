@@ -46,6 +46,7 @@ class ParserService:
                 answer = i.split(ANSWER_TAG)[1].strip()
                 answer = re.sub(r"\t", " ", answer)
                 answers.append(answer)
+
         i = 0
         for q in questions:
             a = answers[i:i + NUMBER_ANSWERS]
@@ -55,7 +56,7 @@ class ParserService:
                 "answers": a
             }
             docx_response.append(docx_block)
-            i += NUMBER_QUESTIONS
+            i += NUMBER_ANSWERS
         return docx_response
 
     async def get_points(self, test_id: str, auth_header: str, answers: PassTestIn):
