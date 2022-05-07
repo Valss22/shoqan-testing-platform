@@ -52,15 +52,15 @@ class TestService:
     async def get_tests(self, discipline: Disciplines, auth_header: str):
         tests: list[Test] = await Test.filter(
             discipline__name=discipline
-        ).prefetch_related("users")
-
+        )
         user_id = get_current_user_id(auth_header)
 
         response: list[dict] = []
 
         i = 0
         for test in tests:
-            user_test: Optional[UserToTest] = await test.users.filter(id=user_id).first()
+            # user_test: Optional[UserToTest] = await test.users.filter(id=user_id).first()
+            user_test: UserToTest = await UserToTest.get(user_id=user_id, test_id=test.id)
             if user_test:
                 response.append({"passed": user_test.passed})
             else:
