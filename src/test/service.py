@@ -66,8 +66,8 @@ class TestService:
                 user_test: UserToTest = await UserToTest.get(user_id=user_id, test_id=test.id)
                 response.append({
                     "passed": user_test.passed,
-                    "attempts": user_test.attempts}
-                )
+                    "attempts": user_test.attempts
+                })
             except DoesNotExist:
                 response.append({
                     "passed": None,
