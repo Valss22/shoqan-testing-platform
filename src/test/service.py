@@ -86,11 +86,16 @@ class TestService:
     async def write_result(self, test_id: str, auth_header: str, score: int) -> None:
         user_id = get_current_user_id(auth_header)
         try:
-            user_test: UserToTest = await UserToTest.get(user_id=user_id, test_id=test_id)
-        except:
+            user_test: UserToTest = await UserToTest.get(
+                user_id=user_id,
+                test_id=test_id
+            )
+        except DoesNotExist:
             user = await User.get(id=user_id)
             test = await Test.get(id=test_id)
-            user_test: UserToTest = await UserToTest.create(user=user, test=test)
+            user_test: UserToTest = await UserToTest.create(
+                user=user, test=test
+            )
 
         if score >= SCORE_THRESHOLD:
             user_test.passed = True

@@ -55,7 +55,7 @@ class ParserService:
                 "answers": a
             }
             docx_response.append(docx_block)
-            i += 1
+            i += NUMBER_QUESTIONS
         return docx_response
 
     async def get_points(self, test_id: str, auth_header: str, answers: PassTestIn):
