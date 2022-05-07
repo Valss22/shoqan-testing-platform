@@ -79,7 +79,10 @@ class TestService:
         if not user_test:
             user = await User.get(id=user_id)
             await test.users.add(user)
-            #await test.save(update_fields=["users"])
+            # await test.save(update_fields=["users"])
+
+        user_test: UserToTest = await test. \
+            users.filter(id=user_id).first()
 
         if score >= SCORE_THRESHOLD:
             user_test.score = score
