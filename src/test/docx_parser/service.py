@@ -70,6 +70,7 @@ class ParserService:
                 if n_a % 5 == 0 or n_a == 0:
                     answer = i.split(ANSWER_TAG)[1].strip()
                     answer = re.sub(r"\t", " ", answer)
+
                     if answer == answers[n_q]:
                         score += 1
                 # else:

@@ -1,8 +1,10 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
 class PassTestIn(BaseModel):
-    answers: list[str]
+    answers: list[Optional[str]]
 
 
 class PassTestOut(BaseModel):
