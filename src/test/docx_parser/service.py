@@ -62,7 +62,7 @@ class ParserService:
         answers: list[str] = answers.dict()["answers"]
         score = 0
         blocks: list[str] = await self.read_docx(test_id)
-        n_q = 0
+        n_q = -1
         n_a = 0
         for i in blocks:
             if ANSWER_TAG in i:
