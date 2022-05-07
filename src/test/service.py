@@ -72,7 +72,6 @@ class TestService:
 
     async def write_result(self, test_id: str, auth_header: str, score: int) -> None:
         user_id = get_current_user_id(auth_header)
-        # test: Test = await Test.get(id=test_id).prefetch_related("users")
         try:
             user_test: UserToTest = await UserToTest.get(user_id=user_id, test_id=test_id)
         except:
@@ -80,12 +79,10 @@ class TestService:
             test = await Test.get(id=test_id)
             user_test: UserToTest = await UserToTest.create(user=user, test=test)
 
-
         if score >= SCORE_THRESHOLD:
-            user_test.score = score
             user_test.passed = True
         else:
             user_test.passed = False
             user_test.attempts += 1
-
+        user_test.score = score
         await user_test.save(update_fields=["score", "passed", "attempts"])

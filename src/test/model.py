@@ -42,7 +42,7 @@ class UserToTest(models.Model):
     )
     passed = fields.BooleanField(null=True)
 
-    attempts = fields.SmallIntField(default=1)  # TODO поставить валидацию
+    attempts = fields.SmallIntField(default=0)  # TODO поставить валидацию
 
     class Meta:
         table = "user_to_test"
