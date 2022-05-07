@@ -62,21 +62,22 @@ class ParserService:
         answers: list[str] = answers.dict()["answers"]
         score = 0
         blocks: list[str] = await self.read_docx(test_id)
-        n_i = 0
+        n_q = 0
         n_a = 0
         for i in blocks:
             if ANSWER_TAG in i:
                 if n_a == 0:
                     answer = i.split(ANSWER_TAG)[1].strip()
                     answer = re.sub(r"\t", " ", answer)
-                    if answer == answers[n_i]:
+                    if answer == answers[n_q]:
                         score += 1
                 else:
                     if n_a == 4:
                         n_a = 0
                     else:
                         n_a += 1
-            n_i += 1
+            elif QUESTION_TAG in i:
+                n_q += 1
         await self.test_service.write_result(test_id, auth_header, score)
 
         return {
