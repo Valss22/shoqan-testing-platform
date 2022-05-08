@@ -86,7 +86,7 @@ class ParserService:
             passed = True
             test = await Test.get(id=test_id).only(
                 "filename", "discipline"
-            ).prefetch_related("user_profile")
+            ).prefetch_related("discipline")
 
             user = await User.get(id=user_id).only("email")
             email: EmailStr = user.email
