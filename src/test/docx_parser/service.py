@@ -5,10 +5,14 @@ from docx import Document
 import re
 import shutil
 import requests
+from pydantic.networks import EmailStr
 
+from src.email_sender.service import EmailSenderService
+from src.middlewares.auth import get_current_user_id
 from src.test.docx_parser.schemas import PassTestIn
 from src.test.model import Test
 from src.test.service import TestService, SCORE_THRESHOLD
+from src.user.model import User
 
 NUMBER_QUESTIONS: Final[int] = 30
 NUMBER_ANSWERS: Final[int] = 5
@@ -20,6 +24,7 @@ ANSWER_TAG: Final[str] = "<variant>"
 class ParserService:
     def __init__(self):
         self.test_service = TestService()
+        self.email_sender_service = EmailSenderService()
 
     async def read_docx(self, test_id: str) -> list[str]:
         docx_url = await Test.get(id=test_id).only("file")
@@ -46,7 +51,6 @@ class ParserService:
                 answer = i.split(ANSWER_TAG)[1].strip()
                 answer = re.sub(r"\t", " ", answer)
                 answers.append(answer)
-
         i = 0
         for q in questions:
             a = answers[i:i + NUMBER_ANSWERS]
@@ -60,8 +64,9 @@ class ParserService:
         return docx_response
 
     async def get_points(self, test_id: str, auth_header: str, answers: PassTestIn):
+        user_id = get_current_user_id(auth_header)
         answers: list[str] = answers.dict()["answers"]
-        score = 0
+        score: int = 0
         blocks: list[str] = await self.read_docx(test_id)
         n_q = -1
         n_a = 0
@@ -70,20 +75,30 @@ class ParserService:
                 if n_a % 5 == 0 or n_a == 0:
                     answer = i.split(ANSWER_TAG)[1].strip()
                     answer = re.sub(r"\t", " ", answer)
-
                     if answer == answers[n_q]:
                         score += 1
-                # else:
-                #     if n_a == 4:
-                #         n_a = 0
-                #     else:
-                #         n_a += 1
                 n_a += 1
             elif QUESTION_TAG in i:
                 n_q += 1
-        await self.test_service.write_result(test_id, auth_header, score)
+        await self.test_service.write_result(test_id, user_id, score)
+
+        if score >= SCORE_THRESHOLD:
+            passed = True
+            test = await Test.get(id=test_id).only("filename", "discipline")
+
+            user = await User.get(id=user_id).only("email")
+            email: EmailStr = user.email
+
+            test_name: str = test.filename
+            discipline: str = test.discipline.name
+
+            self.email_sender_service.send_certificate(
+                email, score, test_name, discipline
+            )
+        else:
+            passed = False
 
         return {
             "score": score,
-            "passed": True if score >= SCORE_THRESHOLD else False
+            "passed": passed
         }

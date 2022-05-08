@@ -1,5 +1,5 @@
 import json
-from typing import Union, Optional, Final
+from typing import Union, Final
 
 from fastapi import UploadFile
 import cloudinary.uploader as cloud
@@ -26,12 +26,7 @@ class TestService:
             InfoKeys,
             Union[Discipline, list[Competencies]]
         ] = json.loads(info_str)
-        # info_obj = {
-        #     "discipline": "Безопасность данных",
-        #     "competencies": [
-        #         "Проектные документы",
-        #         "Технические задания"]
-        # }
+
         discipline, need_to_create = await Discipline.get_or_create(
             name=info_obj[InfoKeys.DISCIPLINE.value]
         )
@@ -45,7 +40,8 @@ class TestService:
         await test.save()
         competencies: list[Competencies] = info_obj[InfoKeys.COMPETENCIES.value]
         for comp in competencies:
-            competence, need_to_create = await Competence.get_or_create(name=comp)
+            competence, need_to_create = await \
+                Competence.get_or_create(name=comp)
             await competence.disciplinies.add(discipline)
             if need_to_create:
                 await competence.save()
@@ -61,9 +57,11 @@ class TestService:
 
         i = 0
         for test in tests:
-            # user_test: Optional[UserToTest] = await test.users.filter(id=user_id).first()
             try:
-                user_test: UserToTest = await UserToTest.get(user_id=user_id, test_id=test.id)
+                user_test: UserToTest = await UserToTest.get(
+                    user_id=user_id,
+                    test_id=test.id
+                )
                 response.append({
                     "passed": user_test.passed,
                     "attempts": user_test.attempts
@@ -73,18 +71,13 @@ class TestService:
                     "passed": None,
                     "attempts": 0,
                 })
-
-            # if user_test.user == user_id:
-            #     response.append({"passed": user_test.passed})
-            # else:
-            #     response.append({"passed": None})
             response[i].update(test.__dict__)
             i += 1
 
         return response
 
-    async def write_result(self, test_id: str, auth_header: str, score: int) -> None:
-        user_id = get_current_user_id(auth_header)
+    async def write_result(self, test_id: str, user_id: str, score: int) -> None:
+        # user_id = get_current_user_id(auth_header)
         try:
             user_test: UserToTest = await UserToTest.get(
                 user_id=user_id,
@@ -104,4 +97,6 @@ class TestService:
             if user_test.attempts == 3:
                 user_test.passed = False
         user_test.score = score
-        await user_test.save(update_fields=["score", "passed", "attempts"])
+        await user_test.save(
+            update_fields=["score", "passed", "attempts"]
+        )
