@@ -84,7 +84,7 @@ class ParserService:
 
         if score >= SCORE_THRESHOLD:
             passed = True
-            test = await Test.get(id=test_id).only("filename", "discipline")
+            test = await Test.get(id=test_id).only("filename").prefetch_related("discipline")
 
             user = await User.get(id=user_id).only("email")
             email: EmailStr = user.email
