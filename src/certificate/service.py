@@ -12,8 +12,7 @@ class CertificateService:
         if all_users:
             tests = await Test.filter(
                 user_to_tests__passed=True,
-            ).prefetch_related("users") \
-                .prefetch_related("discipline")
+            ).prefetch_related("discipline")
             user_tests = await UserToTest.filter(passed=True)
         else:
             user_id = get_current_user_id(auth_header)
@@ -24,8 +23,7 @@ class CertificateService:
             tests = await Test.filter(
                 user_to_tests__passed=True,
                 user_to_tests__user_id=user_id
-            ).prefetch_related("users") \
-                .prefetch_related("discipline")
+            ).prefetch_related("discipline")
             user_tests = await UserToTest.filter(
                 user_id=user_id, passed=True
             )
