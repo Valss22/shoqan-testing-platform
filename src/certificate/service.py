@@ -38,6 +38,7 @@ class CertificateService:
                 user = await User.get(id=user_id) \
                     .prefetch_related("user_profile")
                 fullname = user.user_profile.fullname
+
             response.append({
                 "id": user_tests[i].id,
                 "fullName": fullname,
@@ -47,4 +48,4 @@ class CertificateService:
                 "discipline": tests[i].discipline.name
             })
 
-            return response
+        return response
