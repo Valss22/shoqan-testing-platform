@@ -13,6 +13,7 @@ from src.middlewares.auth import get_current_user_id
 from src.test.model import Test, UserToTest
 from src.test.types import InfoKeys
 from src.user.model import User
+import datetime
 
 SCORE_THRESHOLD: Final[int] = 15
 
@@ -77,7 +78,6 @@ class TestService:
         return response
 
     async def write_result(self, test_id: str, user_id: str, score: int) -> None:
-        # user_id = get_current_user_id(auth_header)
         try:
             user_test: UserToTest = await UserToTest.get(
                 user_id=user_id,
@@ -92,11 +92,12 @@ class TestService:
 
         if score >= SCORE_THRESHOLD:
             user_test.passed = True
+            user_test.date = str(datetime.date.today())
         else:
             user_test.attempts += 1
             if user_test.attempts == 3:
                 user_test.passed = False
         user_test.score = score
         await user_test.save(
-            update_fields=["score", "passed", "attempts"]
+            update_fields=["score", "passed", "attempts", "date"]
         )

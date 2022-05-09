@@ -44,5 +44,7 @@ class UserToTest(models.Model):
 
     attempts = fields.SmallIntField(default=0)  # TODO поставить валидацию
 
+    date = fields.CharField(max_length=10, null=True)
+
     class Meta:
         table = "user_to_test"

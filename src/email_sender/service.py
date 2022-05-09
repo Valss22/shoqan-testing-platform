@@ -21,7 +21,9 @@ class EmailSenderService:
         self, email: EmailStr, score: int,
         test_name: str, discipline: str
     ) -> None:
-        message: str = f"Вы успешно прошли тестирование" \
-                       f" '{test_name}' по дисциплине" \
-                       f" '{discipline}'. Количество балов - {score} / 30"
+        # message: str = f"Вы успешно прошли тестирование" \
+        #                f" '{test_name}' по дисциплине" \
+        #                f" '{discipline}'. Количество балов - {score} / 30"
+
+        message: str = f"{score} / 30"
         self.smtp.sendmail(ROOT_EMAIL, [email], message)
