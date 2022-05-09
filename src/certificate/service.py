@@ -31,13 +31,15 @@ class CertificateService:
             )
 
         response = []
+
         for i in range(len(tests)):
             if all_users:
                 user_id = user_tests[i].user_id
-                user = await User.get(id=user_id).prefetch_related("user_profile")
+                user = await User.get(id=user_id) \
+                    .prefetch_related("user_profile")
                 fullname = user.user_profile.fullname
             response.append({
-                "id": tests[i].id,
+                "id": user_tests[i].id,
                 "fullName": fullname,
                 "testName": tests[i].filename,
                 "score": user_tests[i].score,

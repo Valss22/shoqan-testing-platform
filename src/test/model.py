@@ -26,6 +26,7 @@ class Test(models.Model):
 
 
 class UserToTest(models.Model):
+    id = fields.UUIDField(pk=True)
     user = fields.ForeignKeyField(
         "models.User",
         on_delete="SET NULL",
