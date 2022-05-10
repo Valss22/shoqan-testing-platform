@@ -1,7 +1,11 @@
 import smtplib
-from typing import Final
-
+from email.message import EmailMessage
+from email.mime.text import MIMEText
+from typing import Final, Union
+from email.utils import make_msgid
 from pydantic.networks import EmailStr
+
+from src.static.emails import admin_emails
 
 ROOT_EMAIL: Final[str] = "ShoqanPlatform@gmail.com"
 ROOT_PASSWORD: Final[str] = "mLq-8eS-NAA-S9T"
@@ -12,18 +16,47 @@ class EmailSenderService:
         self.smtp = smtplib.SMTP("smtp.gmail.com", 587)
         self.smtp.starttls()
         self.smtp.login(ROOT_EMAIL, ROOT_PASSWORD)
+        self.msg = EmailMessage()
+        self.msg["From"] = ROOT_EMAIL
+
+    def send_email(
+        self, content: str,
+        reciever: Union[list[str], str],
+        subject: str
+    ) -> None:
+        self.msg.set_content(
+            content, subtype="plain",
+            charset="utf-8"
+        )
+        self.msg["To"] = reciever
+        self.msg["Subject"] = subject
+        self.smtp.send_message(self.msg)
+        self.smtp.quit()
 
     def send_password(self, password: str, email: EmailStr) -> None:
-        self.smtp.sendmail(ROOT_EMAIL, [email], password)
-        self.smtp.quit()
+        content: str = f"Ваш пароль для входа в систему - {password}"
+        self.send_email(content, email, "Подтверждение пароля")
 
     def send_certificate(
         self, email: EmailStr, score: int,
         test_name: str, discipline: str
     ) -> None:
-        # message: str = f"Вы успешно прошли тестирование" \
-        #                f" '{test_name}' по дисциплине" \
-        #                f" '{discipline}'. Количество балов - {score} / 30"
+        content: str = f"Вы успешно прошли тестирование" \
+                       f" '{test_name}' по дисциплине" \
+                       f" '{discipline}'\n" \
+                       f"Количество балов - {score} / 30"
+        self.send_email(content, email, "Сертификат")
 
-        message: str = f"{score} / 30"
-        self.smtp.sendmail(ROOT_EMAIL, [email], message)
+    def send_certificate_to_admins(
+        self, email: EmailStr,
+        score: int, test_name: str, discipline: str
+    ) -> None:
+        content: str = f"Студент {email} успешно прошел тестирование" \
+                       f" '{test_name}'\n" \
+                       f"По дисциплине '{discipline}'\n" \
+                       f"Количество балов - {score} / 30"
+        self.send_email(content, admin_emails, "Сертификат студента")
+
+# e = EmailSenderService()
+# e.send_certificate("valsshokorov@gmail.com", 26, "Без1", "Безопасность ПО")
+# e.send_certificate_to_admins("valsshokorov@gmail.com", 26, "Без1", "Безопасность ПО")

@@ -8,9 +8,9 @@ from src.settings import TOKEN_KEY
 from src.user.model import User
 
 
-def run_auth_middleware(app: FastAPI):
+def add_auth_middleware(app: FastAPI):
     @app.middleware("http")
-    async def is_auth(request: Request, call_next) -> Response:
+    async def wrapper(request: Request, call_next) -> Response:
         try:
             auth_header: str = request.headers["authorization"]
         except KeyError:
@@ -33,7 +33,7 @@ def run_auth_middleware(app: FastAPI):
                 status.HTTP_400_BAD_REQUEST
             )
 
-    return is_auth
+    return wrapper
 
 
 # TODO Переместить в другое место

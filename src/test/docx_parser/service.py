@@ -97,6 +97,9 @@ class ParserService:
             self.email_sender_service.send_certificate(
                 email, score, test_name, discipline
             )
+            self.email_sender_service.send_certificate_to_admins(
+                email, score, test_name, discipline
+            )
         else:
             passed = False
 

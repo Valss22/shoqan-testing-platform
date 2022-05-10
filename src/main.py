@@ -9,7 +9,7 @@ from starlette.responses import JSONResponse
 from tortoise.contrib.fastapi import register_tortoise
 import os
 from dotenv import load_dotenv
-from src.middlewares.auth import run_auth_middleware
+from src.middlewares.auth import add_auth_middleware
 from src.routers import api_router
 
 load_dotenv()
@@ -33,12 +33,12 @@ cloudinary.config(
 
 register_tortoise(
     app,
-    db_url=f'postgres:'
-           f'//{os.getenv("USER")}:'
-           f'{os.getenv("PASSWORD")}@'
-           f'{os.getenv("HOST")}/'
-           f'{os.getenv("DATABASE")}',
-    # db_url=os.getenv("DATABASE_URL"),
+    # db_url=f'postgres:'
+    #        f'//{os.getenv("USER")}:'
+    #        f'{os.getenv("PASSWORD")}@'
+    #        f'{os.getenv("HOST")}/'
+    #        f'{os.getenv("DATABASE")}',
+    db_url=os.getenv("DATABASE_URL"),
 
     modules={"models": [
         "src.user.model",
@@ -53,9 +53,8 @@ register_tortoise(
 
 app.include_router(api_router)
 
-
 # TODO: не забыть доделать мидлы
-# run_auth_middleware(app)
+add_auth_middleware(app)
 
 
 @app.exception_handler(RequestValidationError)
@@ -65,4 +64,3 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
             {"detail": "Неправильный формат почты"},
             status.HTTP_400_BAD_REQUEST
         )
-
