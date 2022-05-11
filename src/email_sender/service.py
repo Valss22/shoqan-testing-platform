@@ -28,7 +28,10 @@ class EmailSenderService:
             content, subtype="plain",
             charset="utf-8"
         )
-        self.msg["To"] = reciever
+        if type(reciever) == list:
+            self.msg["To"] = reciever[0]
+        else:
+            self.msg["To"] = reciever
         self.msg["Subject"] = subject
         self.smtp.send_message(self.msg)
         self.smtp.quit()
