@@ -10,7 +10,7 @@ from tortoise.contrib.fastapi import register_tortoise
 import os
 from dotenv import load_dotenv
 from src.middlewares.auth import add_auth_middleware
-from src.routers import api_router
+from src.routers import api_router, api_router2
 
 load_dotenv()
 app = FastAPI()
@@ -33,12 +33,12 @@ cloudinary.config(
 
 register_tortoise(
     app,
-    db_url=f'postgres:'
-           f'//{os.getenv("USER")}:'
-           f'{os.getenv("PASSWORD")}@'
-           f'{os.getenv("HOST")}/'
-           f'{os.getenv("DATABASE")}',
-    # db_url=os.getenv("DATABASE_URL"),
+    # db_url=f'postgres:'
+    #        f'//{os.getenv("USER")}:'
+    #        f'{os.getenv("PASSWORD")}@'
+    #        f'{os.getenv("HOST")}/'
+    #        f'{os.getenv("DATABASE")}',
+    db_url=os.getenv("DATABASE_URL"),
 
     modules={"models": [
         "src.user.model",
@@ -53,8 +53,13 @@ register_tortoise(
 
 app.include_router(api_router)
 
+app2 = FastAPI()
+
+app2.include_router(api_router2)
+
+
 # TODO: не забыть доделать мидлы
-add_auth_middleware(app)
+add_auth_middleware(app2)
 
 
 @app.exception_handler(RequestValidationError)

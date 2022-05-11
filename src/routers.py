@@ -16,3 +16,12 @@ api_router.include_router(stress_router)
 api_router.include_router(parser_router)
 api_router.include_router(certificate_router)
 api_router.include_router(competence_router)
+
+
+api_router2 = APIRouter()
+api_router2.include_router(user_profile_router)
+api_router2.include_router(test_router)
+api_router2.include_router(stress_router)
+api_router2.include_router(parser_router)
+api_router2.include_router(certificate_router)
+api_router2.include_router(competence_router)
