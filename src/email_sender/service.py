@@ -28,10 +28,7 @@ class EmailSenderService:
             content, subtype="plain",
             charset="utf-8"
         )
-        if type(reciever) == list:
-            self.msg["To"] = reciever[0]
-        else:
-            self.msg["To"] = reciever
+        self.msg["To"] = reciever
         self.msg["Subject"] = subject
         self.smtp.send_message(self.msg)
         self.smtp.quit()
@@ -58,7 +55,7 @@ class EmailSenderService:
                        f" '{test_name}'\n" \
                        f"По дисциплине '{discipline}'\n" \
                        f"Количество балов - {score} / 30"
-        self.send_email(content, admin_emails, "Сертификат студента")
+        self.send_email(content, admin_emails[0], "Сертификат студента")
 
 # e = EmailSenderService()
 # e.send_certificate("valsshokorov@gmail.com", 26, "Без1", "Безопасность ПО")
