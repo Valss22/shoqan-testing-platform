@@ -1,8 +1,6 @@
 import smtplib
 from email.message import EmailMessage
-from email.mime.text import MIMEText
 from typing import Final, Union
-from email.utils import make_msgid
 from pydantic.networks import EmailStr
 
 from src.static.emails import admin_emails

@@ -24,7 +24,7 @@ ANSWER_TAG: Final[str] = "<variant>"
 class ParserService:
     def __init__(self):
         self.test_service = TestService()
-        self.email_sender_service = EmailSenderService()
+        #self.email_sender_service = EmailSenderService()
 
     async def read_docx(self, test_id: str) -> list[str]:
         docx_url = await Test.get(id=test_id).only("file")
@@ -84,22 +84,22 @@ class ParserService:
 
         if score >= SCORE_THRESHOLD:
             passed = True
-            test = await Test.get(id=test_id).only(
-                "filename", "discipline_id"
-            ).prefetch_related("discipline")
+            # test = await Test.get(id=test_id).only(
+            #     "filename", "discipline_id"
+            # ).prefetch_related("discipline")
+            #
+            # user = await User.get(id=user_id).only("email")
+            # email: EmailStr = user.email
+            #
+            # test_name: str = test.filename
+            # discipline: str = test.discipline.name
 
-            user = await User.get(id=user_id).only("email")
-            email: EmailStr = user.email
-
-            test_name: str = test.filename
-            discipline: str = test.discipline.name
-
-            self.email_sender_service.send_certificate(
-                email, score, test_name, discipline
-            )
-            self.email_sender_service.send_certificate_to_admins(
-                email, score, test_name, discipline
-            )
+            # self.email_sender_service.send_certificate(
+            #     email, score, test_name, discipline
+            # )
+            # self.email_sender_service.send_certificate_to_admins(
+            #     email, score, test_name, discipline
+            # )
         else:
             passed = False
 
