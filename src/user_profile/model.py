@@ -10,3 +10,4 @@ class UserProfile(models.Model):
     course = fields.CharEnumField(Courses)
     photo = fields.CharField(max_length=150)
     stress = fields.CharEnumField(StressLevels, null=True)
+    sps = fields.SmallIntField()
