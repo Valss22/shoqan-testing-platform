@@ -10,6 +10,7 @@ class Courses(Enum):
 
 class Specialties(Enum):
     ONE = "Корпоративные информационные системы"
+    TWO = "Вычислительная техника и ПО"
 
 
 class StressLevels(Enum):
