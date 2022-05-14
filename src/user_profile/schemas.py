@@ -17,3 +17,4 @@ class UserProfileOut(BaseModel):
     course: Courses
     photo: str
     stress: Optional[StressLevels]
+    sps: int

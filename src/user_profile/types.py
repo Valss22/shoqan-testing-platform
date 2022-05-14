@@ -23,3 +23,4 @@ class StressLevels(Enum):
     SEVEN = "выше среднего"
     EIGHT = "высокий"
     NINE = "очень высокий"
+
