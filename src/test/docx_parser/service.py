@@ -1,3 +1,4 @@
+from smtplib import SMTPException
 from typing import Final
 from random import shuffle
 
@@ -7,7 +8,7 @@ import shutil
 import requests
 from pydantic.networks import EmailStr
 
-from src.email_sender.service import EmailSenderService
+from src.email_sender.service import email_sender_service
 from src.middlewares.auth import get_current_user_id
 from src.test.docx_parser.schemas import PassTestIn
 from src.test.model import Test
@@ -24,7 +25,7 @@ ANSWER_TAG: Final[str] = "<variant>"
 class ParserService:
     def __init__(self):
         self.test_service = TestService()
-        #self.email_sender_service = EmailSenderService()
+        self.email_sender_service = email_sender_service  # TODO: Возможно добавить IoC
 
     async def read_docx(self, test_id: str) -> list[str]:
         docx_url = await Test.get(id=test_id).only("file")
@@ -84,22 +85,24 @@ class ParserService:
 
         if score >= SCORE_THRESHOLD:
             passed = True
-            # test = await Test.get(id=test_id).only(
-            #     "filename", "discipline_id"
-            # ).prefetch_related("discipline")
-            #
-            # user = await User.get(id=user_id).only("email")
-            # email: EmailStr = user.email
-            #
-            # test_name: str = test.filename
-            # discipline: str = test.discipline.name
+            test = await Test.get(id=test_id).only(
+                "filename", "discipline_id"
+            ).prefetch_related("discipline")
 
-            # self.email_sender_service.send_certificate(
-            #     email, score, test_name, discipline
-            # )
-            # self.email_sender_service.send_certificate_to_admins(
-            #     email, score, test_name, discipline
-            # )
+            user = await User.get(id=user_id).only("email")
+            email: EmailStr = user.email
+
+            test_name: str = test.filename
+            discipline: str = test.discipline.name
+            try:
+                self.email_sender_service.send_certificate(
+                    email, score, test_name, discipline
+                )
+                self.email_sender_service.send_certificate_to_admins(
+                    email, score, test_name, discipline
+                )
+            except SMTPException:
+                pass
         else:
             passed = False
 

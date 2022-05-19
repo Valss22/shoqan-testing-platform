@@ -11,11 +11,14 @@ ROOT_PASSWORD: Final[str] = "mLq-8eS-NAA-S9T"
 
 class EmailSenderService:
     def __init__(self):
-        self.smtp = smtplib.SMTP("smtp.gmail.com", 587)
-        self.smtp.starttls()
-        self.smtp.login(ROOT_EMAIL, ROOT_PASSWORD)
-        self.msg = EmailMessage()
-        self.msg["From"] = ROOT_EMAIL
+        try:
+            self.smtp = smtplib.SMTP("smtp.gmail.com", 587)
+            self.smtp.starttls()
+            self.smtp.login(ROOT_EMAIL, ROOT_PASSWORD)
+            self.msg = EmailMessage()
+            self.msg["From"] = ROOT_EMAIL
+        except smtplib.SMTPException:
+            pass
 
     def send_email(
         self, content: str,
@@ -32,7 +35,7 @@ class EmailSenderService:
         self.smtp.quit()
 
     def send_password(self, password: str, email: EmailStr) -> None:
-        content: str = f"Ваш пароль для входа в систему - {password}"
+        content: str = f"Ваш пароль для входа в систему: {password}"
         self.send_email(content, email, "Подтверждение пароля")
 
     def send_certificate(
@@ -55,6 +58,5 @@ class EmailSenderService:
                        f"Количество балов - {score} / 30"
         self.send_email(content, admin_emails[0], "Сертификат студента")
 
-# e = EmailSenderService()
-# e.send_certificate("valsshokorov@gmail.com", 26, "Без1", "Безопасность ПО")
-# e.send_certificate_to_admins("valsshokorov@gmail.com", 26, "Без1", "Безопасность ПО")
+
+email_sender_service = EmailSenderService()
