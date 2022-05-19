@@ -8,7 +8,7 @@ import shutil
 import requests
 from pydantic.networks import EmailStr
 
-from src.email_sender.service import email_sender_service
+from src.email_sender.service import EmailSenderService
 from src.middlewares.auth import get_current_user_id
 from src.test.docx_parser.schemas import PassTestIn
 from src.test.model import Test
@@ -25,7 +25,7 @@ ANSWER_TAG: Final[str] = "<variant>"
 class ParserService:
     def __init__(self):
         self.test_service = TestService()
-        self.email_sender_service = email_sender_service  # TODO: Возможно добавить IoC
+        self.email_sender_service = EmailSenderService()  # TODO: Возможно добавить IoC
 
     async def read_docx(self, test_id: str) -> list[str]:
         docx_url = await Test.get(id=test_id).only("file")
