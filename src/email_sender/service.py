@@ -33,7 +33,6 @@ class EmailSenderService:
     def send_password(self, password: str, email: EmailStr) -> None:
         content: str = f"Ваш пароль для входа в систему: {password}"
         self.send_email(content, email, "Подтверждение пароля")
-        self.smtp.quit()
 
     def send_certificate(
         self, email: EmailStr, score: int,
@@ -54,4 +53,9 @@ class EmailSenderService:
                        f"По дисциплине '{discipline}'\n" \
                        f"Количество балов - {score} / 30"
         self.send_email(content, admin_emails[0], "Сертификат студента")
-        self.smtp.quit()  # TODO: рефактор квитов
+
+    def __del__(self):
+        self.smtp.quit()
+
+
+email_sender_service = EmailSenderService()
