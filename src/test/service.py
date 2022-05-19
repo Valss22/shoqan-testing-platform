@@ -101,3 +101,4 @@ class TestService:
         await user_test.save(
             update_fields=["score", "passed", "attempts", "date"]
         )
+

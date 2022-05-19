@@ -5,6 +5,7 @@ import bcrypt
 import jwt
 from pydantic import EmailStr
 from starlette import status
+from starlette.background import BackgroundTasks
 from starlette.responses import JSONResponse
 from tortoise.exceptions import DoesNotExist
 
@@ -20,7 +21,9 @@ class UserService:
     def __init__(self):
         self.email_sender_service = email_sender_service
 
-    async def create_user(self, user: UserIn) -> Optional[JSONResponse]:
+    async def create_user(
+        self, user: UserIn, background_tasks: BackgroundTasks
+    ) -> Optional[JSONResponse]:
         password: Union[str, bytes] = secrets.token_urlsafe(4)
         email: EmailStr = user.dict()["email"]
 
@@ -28,7 +31,12 @@ class UserService:
             return JSONResponse({
                 "detail": "Данный пользователь уже существует"
             }, status.HTTP_400_BAD_REQUEST)
-        self.email_sender_service.send_password(password, email)
+
+        background_tasks.add_task(
+            self.email_sender_service.send_password,
+            password, email
+        )
+
         password = password.encode()
         await User.create(**user.dict(), password_hash=password)
 

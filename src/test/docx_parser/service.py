@@ -1,3 +1,4 @@
+from fastapi import BackgroundTasks
 from smtplib import SMTPException
 from typing import Final
 from random import shuffle
@@ -64,7 +65,10 @@ class ParserService:
             i += NUMBER_ANSWERS
         return docx_response
 
-    async def get_points(self, test_id: str, auth_header: str, answers: PassTestIn):
+    async def get_points(
+        self, test_id: str, auth_header: str,
+        answers: PassTestIn, background_tasks: BackgroundTasks
+    ):
         user_id = get_current_user_id(auth_header)
         answers: list[str] = answers.dict()["answers"]
         score: int = 0
@@ -98,14 +102,14 @@ class ParserService:
                 self.email_sender_service.send_certificate(
                     email, score, test_name, discipline
                 )
-                self.email_sender_service.send_certificate_to_admins(
+                background_tasks.add_task(
+                    self.email_sender_service.send_certificate_to_admin,
                     email, score, test_name, discipline
                 )
             except SMTPException:
                 pass
         else:
             passed = False
-
         return {
             "score": score,
             "passed": passed

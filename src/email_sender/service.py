@@ -1,8 +1,10 @@
 import smtplib
 from email.message import EmailMessage
+from time import sleep
 from typing import Final, Union
 from pydantic.networks import EmailStr
 
+from src.discipline.types import Disciplines
 from src.static.emails import admin_emails
 
 ROOT_EMAIL: Final[str] = "ShoqanPlatform@gmail.com"
@@ -22,6 +24,9 @@ class EmailSenderService:
         reciever: Union[list[str], str],
         subject: str
     ) -> None:
+        sleep(5)
+        del self.msg["To"]
+        del self.msg["Subject"]
         self.msg.set_content(
             content, subtype="plain",
             charset="utf-8"
@@ -36,21 +41,21 @@ class EmailSenderService:
 
     def send_certificate(
         self, email: EmailStr, score: int,
-        test_name: str, discipline: str
+        test_name: str, discipline: Disciplines
     ) -> None:
         content: str = f"Вы успешно прошли тестирование" \
                        f" '{test_name}' по дисциплине" \
-                       f" '{discipline}'\n" \
+                       f" '{discipline.value}'\n" \
                        f"Количество балов - {score} / 30"
         self.send_email(content, email, "Сертификат")
 
-    def send_certificate_to_admins(
+    def send_certificate_to_admin(
         self, email: EmailStr,
-        score: int, test_name: str, discipline: str
+        score: int, test_name: str, discipline: Disciplines
     ) -> None:
         content: str = f"Студент {email} успешно прошел тестирование" \
                        f" '{test_name}'\n" \
-                       f"По дисциплине '{discipline}'\n" \
+                       f"По дисциплине '{discipline.value}'\n" \
                        f"Количество балов - {score} / 30"
         self.send_email(content, admin_emails[1], "Сертификат студента")
 
