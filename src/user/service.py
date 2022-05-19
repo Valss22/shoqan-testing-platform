@@ -1,3 +1,4 @@
+from smtplib import SMTPException
 from time import time
 from typing import Union, Optional
 
@@ -28,18 +29,9 @@ class UserService:
             return JSONResponse({
                 "detail": "Данный пользователь уже существует"
             }, status.HTTP_400_BAD_REQUEST)
-
-        # self.send_password_to_email(password, email)
         self.email_sender_service.send_password(password, email)
         password = password.encode()
         await User.create(**user.dict(), password_hash=password)
-
-    # def send_password_to_email(self, password: str, email: EmailStr) -> None:
-    #     smtp = smtplib.SMTP("smtp.gmail.com", 587)
-    #     smtp.starttls()
-    #     smtp.login("ShoqanPlatform@gmail.com", "mLq-8eS-NAA-S9T")
-    #     smtp.sendmail("ShoqanPlatform@gmail.com", [email], password)
-    #     smtp.quit()
 
     async def auth_user(self, user: UserIn) -> Union[None, dict, JSONResponse]:
         email: EmailStr = user.dict()["email"]
