@@ -8,7 +8,7 @@ from starlette import status
 from starlette.responses import JSONResponse
 from tortoise.exceptions import DoesNotExist
 
-from src.email_sender.service import EmailSenderService
+from src.email_sender.service import email_sender_service
 from src.static.emails import admin_emails
 from src.settings import TOKEN_KEY, TOKEN_TIME
 from src.user.model import User
@@ -18,7 +18,7 @@ import secrets
 
 class UserService:
     def __init__(self):
-        self.email_sender_service = EmailSenderService()
+        self.email_sender_service = email_sender_service
 
     async def create_user(self, user: UserIn) -> Optional[JSONResponse]:
         password: Union[str, bytes] = secrets.token_urlsafe(4)
