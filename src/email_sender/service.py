@@ -52,7 +52,7 @@ class EmailSenderService:
                        f" '{test_name}'\n" \
                        f"По дисциплине '{discipline}'\n" \
                        f"Количество балов - {score} / 30"
-        self.send_email(content, admin_emails[0], "Сертификат студента")
+        self.send_email(content, admin_emails[1], "Сертификат студента")
 
     def __del__(self):
         self.smtp.quit()
