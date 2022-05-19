@@ -1,4 +1,3 @@
-from smtplib import SMTPException
 from time import time
 from typing import Union, Optional
 

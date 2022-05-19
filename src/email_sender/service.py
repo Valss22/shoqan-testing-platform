@@ -11,14 +11,11 @@ ROOT_PASSWORD: Final[str] = "mLq-8eS-NAA-S9T"
 
 class EmailSenderService:
     def __init__(self):
-        try:
-            self.smtp = smtplib.SMTP("smtp.gmail.com", 587)
-            self.smtp.starttls()
-            self.smtp.login(ROOT_EMAIL, ROOT_PASSWORD)
-            self.msg = EmailMessage()
-            self.msg["From"] = ROOT_EMAIL
-        except smtplib.SMTPException:
-            pass
+        self.smtp = smtplib.SMTP("smtp.gmail.com", 587)
+        self.smtp.starttls()
+        self.smtp.login(ROOT_EMAIL, ROOT_PASSWORD)
+        self.msg = EmailMessage()
+        self.msg["From"] = ROOT_EMAIL
 
     def send_email(
         self, content: str,
