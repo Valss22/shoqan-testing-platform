@@ -68,3 +68,4 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
             {"detail": "Неправильный формат почты"},
             status.HTTP_400_BAD_REQUEST
         )
+##
