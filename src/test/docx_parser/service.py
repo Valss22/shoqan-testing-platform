@@ -51,7 +51,7 @@ class ParserService:
                 questions.append(i.split(QUESTION_TAG)[1].strip())
             elif ANSWER_TAG in i:
                 answer = i.split(ANSWER_TAG)[1].strip()
-                #answer = re.sub(r"\t", " ", answer)
+                answer = re.sub(r"\t", " ", answer)
                 answers.append(answer)
         i = 0
         for q in questions:
