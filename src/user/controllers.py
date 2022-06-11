@@ -1,7 +1,5 @@
 from fastapi import APIRouter, Depends
 from starlette.background import BackgroundTasks
-
-from src.email_sender.service import email_sender_service
 from src.user.schemas import UserIn, UserOut
 from src.user.service import UserService
 
@@ -24,11 +22,3 @@ async def login_user(
     user_service: UserService = Depends()
 ):
     return await user_service.auth_user(user)
-
-
-# @user_router.get("/background/")
-# async def test_task(
-#     background_tasks: BackgroundTasks,
-# ):
-#     background_tasks.add_task(email_sender_service.send_password, "1234", "valsshokorov@gmail.com")
-#     return {"msg": "ok"}

@@ -8,7 +8,8 @@ from src.discipline.types import Disciplines
 from src.static.emails import admin_emails
 
 ROOT_EMAIL: Final[str] = "ShoqanPlatform@gmail.com"
-ROOT_PASSWORD: Final[str] = "mLq-8eS-NAA-S9T"
+# ROOT_PASSWORD: Final[str] = "mLq-8eS-NAA-S9T"
+ROOT_PASSWORD: Final[str] = "zwqpxcekrenbpify"
 
 
 class EmailSenderService:

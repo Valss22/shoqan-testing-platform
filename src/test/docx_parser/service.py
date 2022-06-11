@@ -99,7 +99,8 @@ class ParserService:
             test_name: str = test.filename
             discipline: str = test.discipline.name
             try:
-                self.email_sender_service.send_certificate(
+                background_tasks.add_task(
+                    self.email_sender_service.send_certificate,
                     email, score, test_name, discipline
                 )
                 background_tasks.add_task(
