@@ -42,21 +42,21 @@ class EmailSenderService:
 
     def send_certificate(
         self, email: EmailStr, score: int,
-        test_name: str, discipline: Disciplines
+        test_name: str, discipline: str
     ) -> None:
         content: str = f"Вы успешно прошли тестирование" \
                        f" '{test_name}' по дисциплине" \
-                       f" '{discipline.value}'\n" \
+                       f" '{discipline}'\n" \
                        f"Количество балов - {score} / 30"
         self.send_email(content, email, "Сертификат")
 
     def send_certificate_to_admin(
         self, email: EmailStr,
-        score: int, test_name: str, discipline: Disciplines
+        score: int, test_name: str, discipline: str
     ) -> None:
         content: str = f"Студент {email} успешно прошел тестирование" \
                        f" '{test_name}'\n" \
-                       f"По дисциплине '{discipline.value}'\n" \
+                       f"По дисциплине '{discipline}'\n" \
                        f"Количество балов - {score} / 30"
         self.send_email(content, admin_emails[1], "Сертификат студента")
 
