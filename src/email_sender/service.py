@@ -3,13 +3,11 @@ from email.message import EmailMessage
 from time import sleep
 from typing import Final, Union
 from pydantic.networks import EmailStr
-
-from src.discipline.types import Disciplines
 from src.static.emails import admin_emails
 
 ROOT_EMAIL: Final[str] = "ShoqanPlatform@gmail.com"
-# ROOT_PASSWORD: Final[str] = "mLq-8eS-NAA-S9T"
-ROOT_PASSWORD: Final[str] = "zwqpxcekrenbpify"
+# ROOT_PASSWORD: Final[str] = "mLq-8eS-NAA-S9T" Пароль от почты
+ROOT_PASSWORD: Final[str] = "zwqpxcekrenbpify"  # Пароль для входа с third party app
 
 
 class EmailSenderService:
