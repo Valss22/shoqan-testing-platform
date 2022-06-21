@@ -22,7 +22,8 @@ class UserService:
         self.email_sender_service = email_sender_service
 
     async def create_user(
-        self, user: UserIn, background_tasks: BackgroundTasks
+        self, user: UserIn,
+        background_tasks: BackgroundTasks
     ) -> Optional[JSONResponse]:
         password: Union[str, bytes] = secrets.token_urlsafe(4)
         email: EmailStr = user.dict()["email"]
