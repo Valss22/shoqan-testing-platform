@@ -1,1 +1,1 @@
-admin_emails: list[str] = ["Gal.Esm@mail.ru", "skk_19739@mail.ru", "deger.begerrr@gmail.com"]
+admin_emails: list[str] = ["Gal.Esm@mail.ru", "skk_19739@mail.ru"]
