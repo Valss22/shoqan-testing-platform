@@ -6,7 +6,6 @@ from pydantic import EmailStr
 from starlette import status
 from starlette.responses import JSONResponse
 from tortoise.exceptions import DoesNotExist
-from src.email_sender.service import email_sender_service
 from src.static.emails import admin_emails
 from src.settings import TOKEN_KEY, TOKEN_TIME
 from src.user.model import User

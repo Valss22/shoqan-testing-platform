@@ -2,6 +2,9 @@ import smtplib
 from email.message import EmailMessage
 from time import sleep
 from typing import Final, Union
+
+import pdfkit
+from docx import Document
 from pydantic.networks import EmailStr
 from src.static.emails import admin_emails
 
@@ -34,7 +37,6 @@ class EmailSenderService:
         self.msg["Subject"] = subject
         self.smtp.send_message(self.msg)
 
-
     def send_certificate(
         self, email: EmailStr, score: int,
         test_name: str, discipline: str
@@ -59,4 +61,31 @@ class EmailSenderService:
         self.smtp.quit()
 
 
-email_sender_service = EmailSenderService()
+# email_sender_service = EmailSenderService()
+
+
+# def send_pdf():
+#     document = Document("../static/certificate.docx")
+#     for paragraph in document.paragraphs:
+#         paragraph.text = paragraph.text.replace("{test}", "Тест1")
+#         paragraph.text = paragraph.text.replace("{fullname}", "ФИО1")
+#         paragraph.text = paragraph.text.replace("{score}", "20")
+#         paragraph.text = paragraph.text.replace("{date}", "2020-16-7")
+#
+#     document.save("../static/certificate.pdf")
+#
+#
+# send_pdf()
+
+from jinja2 import Environment, FileSystemLoader
+
+name = 'Александр'
+
+config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
+env = Environment(loader=FileSystemLoader('.'))
+
+template = env.get_template("certificate.html")
+
+pdf_template = template.render({'name': name})
+
+pdfkit.from_string(pdf_template, 'out.pdf', configuration=config)

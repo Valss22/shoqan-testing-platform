@@ -1,5 +1,3 @@
-from starlette.responses import JSONResponse
-
 from src.middlewares.auth import get_current_user_id
 from src.test.model import Test, UserToTest
 from src.user.model import User
