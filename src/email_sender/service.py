@@ -34,9 +34,6 @@ class EmailSenderService:
         self.msg["Subject"] = subject
         self.smtp.send_message(self.msg)
 
-    def send_password(self, password: str, email: EmailStr) -> None:
-        content: str = f"Ваш пароль для входа в систему: {password}"
-        self.send_email(content, email, "Подтверждение пароля")
 
     def send_certificate(
         self, email: EmailStr, score: int,

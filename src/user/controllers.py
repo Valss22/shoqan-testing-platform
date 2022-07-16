@@ -10,10 +10,10 @@ user_router = APIRouter(
 
 @user_router.post("/register/")
 async def register_user(
-    user: UserIn, background_tasks: BackgroundTasks,
+    user: UserIn,
     user_service: UserService = Depends()
 ):
-    return await user_service.create_user(user, background_tasks)
+    return await user_service.create_user(user)
 
 
 @user_router.post("/login/", response_model=UserOut)

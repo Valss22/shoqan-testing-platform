@@ -5,7 +5,7 @@ from pydantic import BaseModel, EmailStr, Field
 
 class UserIn(BaseModel):
     email: EmailStr
-    password: Optional[str]
+    password: str
 
 
 class UserOut(BaseModel):

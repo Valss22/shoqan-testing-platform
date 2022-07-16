@@ -1,42 +1,28 @@
 from time import time
-from typing import Union, Optional
-
+from typing import Union
 import bcrypt
 import jwt
 from pydantic import EmailStr
 from starlette import status
-from starlette.background import BackgroundTasks
 from starlette.responses import JSONResponse
 from tortoise.exceptions import DoesNotExist
-
 from src.email_sender.service import email_sender_service
 from src.static.emails import admin_emails
 from src.settings import TOKEN_KEY, TOKEN_TIME
 from src.user.model import User
 from src.user.schemas import UserIn
-import secrets
 
 
 class UserService:
-    def __init__(self):
-        self.email_sender_service = email_sender_service
 
-    async def create_user(
-        self, user: UserIn,
-        background_tasks: BackgroundTasks
-    ) -> Optional[JSONResponse]:
-        password: Union[str, bytes] = secrets.token_urlsafe(4)
+    async def create_user(self, user: UserIn):
+        password = user.dict()["password"]
         email: EmailStr = user.dict()["email"]
 
         if await User.filter(email=email):
             return JSONResponse({
                 "detail": "Данный пользователь уже существует"
             }, status.HTTP_400_BAD_REQUEST)
-
-        background_tasks.add_task(
-            self.email_sender_service.send_password,
-            password, email
-        )
 
         password = password.encode()
         await User.create(**user.dict(), password_hash=password)
