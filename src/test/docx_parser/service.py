@@ -94,6 +94,8 @@ class ParserService:
             ).prefetch_related("discipline")
 
             user = await User.get(id=user_id).only("email")
+            user_profile = await user.user_profile
+            fullname = user_profile.fullname
             email: EmailStr = user.email
 
             test_name: str = test.filename
@@ -101,7 +103,7 @@ class ParserService:
             try:
                 background_tasks.add_task(
                     self.email_sender_service.send_certificate,
-                    email, score, test_name, discipline
+                    fullname, email, score, test_name, discipline
                 )
                 background_tasks.add_task(
                     self.email_sender_service.send_certificate_to_admin,

@@ -26,6 +26,7 @@ lxml==4.8.0
 MarkupSafe==2.1.1
 mypy==0.942
 mypy-extensions==0.4.3
+pdfkit==1.0.0
 pendulum==2.1.2
 pycparser==2.21
 pydantic==1.9.0

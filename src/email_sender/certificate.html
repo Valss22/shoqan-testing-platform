@@ -4,12 +4,109 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<style>
+    .wrapper {
+        height: 100%;
+        padding: 20px;
+        margin: 4px;
+        justify-content: space-between;
+        border: 2px solid black;
+    }
+
+    .wrapper, .content, .content > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .img {
+        text-align: left;
+        width: 50%;
+        height: 50%;
+    }
+
+    .footer {
+        text-align: right;
+    }
+
+    .title {
+        font-weight: bold;
+        font-size: 50px;
+
+    }
+
+    .subtitle {
+        font-weight: bold;
+        font-size: 32px;
+        margin-top: 10px;
+    }
+
+    .title:nth-child(2) {
+        margin-bottom: 50px;
+    }
+
+    .subtitle:last-child {
+        margin-bottom: 100px;
+        margin-top: 30px;
+    }
+
+    .date {
+        font-size: 20px;
+    }
+
+    .info {
+        font-size: 28px;
+        margin-top: 30px;
+    }
+
+    .info:last-child {
+        margin-bottom: 80px;
+    }
+
+</style>
 <body>
-    <div>
-        {{name}}
+<div class="wrapper">
+    <div class="img">
+        <img src="https://res.cloudinary.com/dmh0ekjaw/image/upload/v1657993006/kgu_z9ngjs.png" alt="">
     </div>
-    <div>
-        <img src="https://res.cloudinary.com/dmh0ekjaw/image/upload/v1657192238/om85t6l2swcugwabxg3u.png" alt="">
+    <div class="content">
+        <div class="titleBlock">
+            <div class="title">
+                Сертификат
+            </div>
+            <div class="title">
+                Certificate
+            </div>
+            <div class="subtitle">
+                Получатель
+            </div>
+            <div class="subtitle">
+                Recipent
+            </div>
+            <div class="subtitle">
+                {{ fullname }}
+            </div>
+        </div>
+        <div class="infoBlock">
+            <div class="info">
+                За успешное прохождение тестирования {{test}} по дисциплине {{discipline}}, набрав {{score}} из 30 баллов
+            </div>
+            <div class="info">
+                For successfully passing the test {{test}} in the discipline
+                {{discipline}}, gaining {{score}} out of 30 points
+            </div>
+            <div class="info">
+                "Pán" páni boıynsha {{test}} testileýden sátti ótkeni úshin 30 baldan
+                {{score}} jınady
+            </div>
+        </div>
     </div>
+    <div class="footer">
+        <div class="date">
+            {{ date }}
+        </div>
+    </div>
+</div>
 </body>
 </html>
