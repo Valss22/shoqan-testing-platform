@@ -103,7 +103,7 @@ def send_pdf(fullname, email: EmailStr, score: int, test_name: str, discipline: 
         "score": str(score),
         "date": str(date.today())
     })
-    pdfkit.from_string(pdf_template, 'certificate.pdf', configuration=config)
+    pdfkit.from_string(pdf_template, 'certificate.pdf', configuration=config, options={"page-size": "A3"})
 
     smtp = smtplib.SMTP("smtp.gmail.com", 587)
     smtp.starttls()
