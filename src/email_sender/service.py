@@ -111,7 +111,7 @@ def send_pdf(fullname, email: EmailStr, score: int, test_name: str, discipline: 
     msg = MIMEMultipart()
     msg["From"] = ROOT_EMAIL
 
-    with open("out.pdf", "rb") as f:
+    with open("certificate.pdf", "rb") as f:
         attach = MIMEApplication(f.read(), _subtype="pdf")
 
     attach.add_header('Content-Disposition', 'attachment', filename=str("open.pdf"))
