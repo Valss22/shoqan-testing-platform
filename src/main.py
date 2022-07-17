@@ -1,4 +1,6 @@
 # type: ignore
+import subprocess
+
 import cloudinary
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
@@ -38,7 +40,7 @@ register_tortoise(
            f'{os.getenv("PASSWORD")}@'
            f'{os.getenv("HOST")}/'
            f'{os.getenv("DATABASE")}',
-    #db_url=os.getenv("DATABASE_URL"),
+    # db_url=os.getenv("DATABASE_URL"),
 
     modules={"models": [
         "src.user.model",
@@ -68,4 +70,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
             {"detail": "Неправильный формат почты"},
             status.HTTP_400_BAD_REQUEST
         )
+
+
 ##
+

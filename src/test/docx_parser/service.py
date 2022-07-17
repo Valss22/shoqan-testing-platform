@@ -2,15 +2,14 @@ from fastapi import BackgroundTasks
 from smtplib import SMTPException
 from typing import Final
 from random import shuffle
-
 from docx import Document
 import re
 import shutil
 import requests
 from pydantic.networks import EmailStr
-
-from src.email_sender.service import email_sender_service
+from src.email_sender.service import email_sender_service, send_pdf
 from src.middlewares.auth import get_current_user_id
+from src.static.emails import admin_emails
 from src.test.docx_parser.schemas import PassTestIn
 from src.test.model import Test
 from src.test.service import TestService, SCORE_THRESHOLD
@@ -93,7 +92,7 @@ class ParserService:
                 "filename", "discipline_id"
             ).prefetch_related("discipline")
 
-            user = await User.get(id=user_id).only("email")
+            user = await User.get(id=user_id)
             user_profile = await user.user_profile
             fullname = user_profile.fullname
             email: EmailStr = user.email
@@ -102,14 +101,15 @@ class ParserService:
             discipline: str = test.discipline.name.value
             try:
                 background_tasks.add_task(
-                    self.email_sender_service.send_certificate,
+                    send_pdf,
                     fullname, email, score, test_name, discipline
                 )
                 background_tasks.add_task(
-                    self.email_sender_service.send_certificate_to_admin,
-                    email, score, test_name, discipline
+                    send_pdf,
+                    fullname, admin_emails[1], score, test_name, discipline
                 )
-            except SMTPException:
+            except SMTPException as e:
+                print(e)
                 pass
         else:
             passed = False
