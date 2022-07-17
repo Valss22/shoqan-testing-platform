@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 from datetime import date
 from email.mime.application import MIMEApplication
@@ -7,6 +8,8 @@ import smtplib
 from email.message import EmailMessage
 from time import sleep
 from typing import Final, Union
+
+import requests
 from jinja2 import Environment, FileSystemLoader
 import pdfkit
 from pydantic.networks import EmailStr
@@ -95,6 +98,15 @@ def send_pdf(fullname, email: EmailStr, score: int, test_name: str, discipline: 
     config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
 
     env = Environment(loader=FileSystemLoader('.'))
+
+    img_url = requests.get(
+        "https://res.cloudinary.com/dmh0ekjaw/image/upload/v1657993006/kgu_z9ngjs.png",
+        stream=True
+    )
+    with open("src/static/logo.png", "wb") as out_file:
+        shutil.copyfileobj(img_url.raw, out_file)
+    del img_url
+
     template = env.get_template("src/email_sender/certificate.html")
     pdf_template = template.render({
         "fullname": fullname,
