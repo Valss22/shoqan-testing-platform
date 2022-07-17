@@ -1,5 +1,4 @@
 # type: ignore
-import subprocess
 
 import cloudinary
 from fastapi import FastAPI
@@ -35,12 +34,12 @@ cloudinary.config(
 
 register_tortoise(
     app,
-    db_url=f'postgres:'
-           f'//{os.getenv("USER")}:'
-           f'{os.getenv("PASSWORD")}@'
-           f'{os.getenv("HOST")}/'
-           f'{os.getenv("DATABASE")}',
-    # db_url=os.getenv("DATABASE_URL"),
+    # db_url=f'postgres:'
+    #        f'//{os.getenv("USER")}:'
+    #        f'{os.getenv("PASSWORD")}@'
+    #        f'{os.getenv("HOST")}/'
+    #        f'{os.getenv("DATABASE")}',
+    db_url=os.getenv("DATABASE_URL"),
 
     modules={"models": [
         "src.user.model",
