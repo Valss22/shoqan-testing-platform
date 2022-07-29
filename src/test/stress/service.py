@@ -30,7 +30,6 @@ class StressService:
         current_user = await get_current_user(auth_header)
         await current_user.fetch_related("user_profile")
         user_profile: UserProfile = current_user.user_profile
-
         score: int = 0
         for answer in stress.dict()["answers"]:
             score += answer_scores[answer]

@@ -1,5 +1,4 @@
 import os
-import shutil
 import subprocess
 from datetime import date
 from email.mime.application import MIMEApplication
@@ -8,8 +7,6 @@ import smtplib
 from email.message import EmailMessage
 from time import sleep
 from typing import Final, Union
-
-import requests
 from jinja2 import Environment, FileSystemLoader
 import pdfkit
 from pydantic.networks import EmailStr
@@ -87,15 +84,15 @@ email_sender_service = EmailSenderService()
 
 
 def send_pdf(fullname, email: EmailStr, score: int, test_name: str, discipline: str):
-    if 'DYNO' in os.environ:
-        print('loading wkhtmltopdf path on heroku')
-        WKHTMLTOPDF_CMD = subprocess.Popen(
-            ['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf-pack')],
-            # Note we default to 'wkhtmltopdf' as the binary name
-            stdout=subprocess.PIPE).communicate()[0].strip()
-    else:
-        WKHTMLTOPDF_CMD = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
-    config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
+    # if 'DYNO' in os.environ:
+    #     print('loading wkhtmltopdf path on heroku')
+    #     WKHTMLTOPDF_CMD = subprocess.Popen(
+    #         ['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf-pack')],
+    #         # Note we default to 'wkhtmltopdf' as the binary name
+    #         stdout=subprocess.PIPE).communicate()[0].strip()
+    # else:
+    #     WKHTMLTOPDF_CMD = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
 
     env = Environment(loader=FileSystemLoader('.'))
 
