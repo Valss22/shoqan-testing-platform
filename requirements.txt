@@ -51,3 +51,5 @@ uvicorn==0.17.6
 watchgod==0.8.2
 websockets==10.2
 wkhtmltopdf-pack-ng==0.12.3.0
+git+git://github.com/johnfraney/wkhtmltopdf-pack.git
+pdfkit==0.6.1
