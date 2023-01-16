@@ -39,7 +39,8 @@ register_tortoise(
 #            f'{os.getenv("PASSWORD")}@'
 #            f'{os.getenv("HOST")}/'
 #            f'{os.getenv("DATABASE")}',
-    db_url=os.getenv("DATABASE_URL"),
+    #db_url=os.getenv("DATABASE_URL"),
+    db_url="sqlite://db.sqlite3",
 
     modules={"models": [
         "src.user.model",
