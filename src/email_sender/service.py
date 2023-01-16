@@ -84,14 +84,14 @@ email_sender_service = EmailSenderService()
 
 
 def send_pdf(fullname, email: EmailStr, score: int, test_name: str, discipline: str):
-    # if 'DYNO' in os.environ:
-    #     print('loading wkhtmltopdf path on heroku')
-    #     WKHTMLTOPDF_CMD = subprocess.Popen(
-    #         ['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf-pack')],
-    #         # Note we default to 'wkhtmltopdf' as the binary name
-    #         stdout=subprocess.PIPE).communicate()[0].strip()
-    # else:
-    #     WKHTMLTOPDF_CMD = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    if 'DYNO' in os.environ:
+        print('loading wkhtmltopdf path on heroku')
+        WKHTMLTOPDF_CMD = subprocess.Popen(
+            ['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf-pack')],
+            # Note we default to 'wkhtmltopdf' as the binary name
+            stdout=subprocess.PIPE).communicate()[0].strip()
+    else:
+        WKHTMLTOPDF_CMD = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
     config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
 
     env = Environment(loader=FileSystemLoader('.'))
