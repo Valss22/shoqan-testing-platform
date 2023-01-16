@@ -92,10 +92,9 @@ def send_pdf(fullname, email: EmailStr, score: int, test_name: str, discipline: 
             stdout=subprocess.PIPE).communicate()[0].strip()
     else:
         WKHTMLTOPDF_CMD = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
-    config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
+    config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
 
     env = Environment(loader=FileSystemLoader('.'))
-
     template = env.get_template("src/email_sender/certificate.html")
     pdf_template = template.render({
         "fullname": fullname,
@@ -104,7 +103,7 @@ def send_pdf(fullname, email: EmailStr, score: int, test_name: str, discipline: 
         "score": str(score),
         "date": str(date.today())
     })
-    pdfkit.from_string(pdf_template, 'certificate.pdf', configuration=config, options={"page-size": "A3"})
+    pdfkit.from_string(pdf_template, 'certificate.pdf', configuration=config)
 
     smtp = smtplib.SMTP("smtp.gmail.com", 587)
     smtp.starttls()
@@ -112,10 +111,10 @@ def send_pdf(fullname, email: EmailStr, score: int, test_name: str, discipline: 
     msg = MIMEMultipart()
     msg["From"] = ROOT_EMAIL
 
-    with open("certificate.pdf", "rb") as f:
+    with open("out.pdf", "rb") as f:
         attach = MIMEApplication(f.read(), _subtype="pdf")
 
-    attach.add_header('Content-Disposition', 'attachment', filename=str("certificate.pdf"))
+    attach.add_header('Content-Disposition', 'attachment', filename=str("open.pdf"))
     msg.attach(attach)
 
     msg["To"] = email
